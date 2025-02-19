@@ -10,9 +10,9 @@
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon.png">
-    <title>Freedash Template - The Ultimate Multipurpose admin template</title>
+    <title>EXCHANGE - Web Exchange System</title>
     <!-- Custom CSS -->
-    <link href="./dist/css/style.min.css" rel="stylesheet">
+    <link href="./dist/css/style.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -38,10 +38,10 @@
         <!-- ============================================================== -->
         <!-- Login box.scss -->
         <!-- ============================================================== -->
-        <div class="auth-wrapper d-flex no-block justify-content-center align-items-center position-relative"
-            style="background:url(./assets/images/big/auth-bg.jpg) no-repeat center center;">
+        <div class="auth-wrapper d-flex no-block justify-content-center align-items-center position-relative">
             <div class="auth-box row text-center">
-                <div class="col-lg-7 col-md-5 modal-bg-img" style="background-image: url(./assets/images/big/3.jpg);">
+                <div class="col-lg-7 col-md-5 modal-bg-img d-lg-flex align-items-center" >
+                    <img src="./assets/images/Logo.png" alt="wrapkit">
                 </div>
                 <div class="col-lg-5 col-md-7 bg-white">
                     <div class="p-3">
@@ -68,7 +68,7 @@
                                     <button type="submit" class="btn w-100 btn-dark">Sign Up</button>
                                 </div>
                                 <div class="col-lg-12 text-center mt-5">
-                                    Already have an account? <a href="#" class="text-danger">Sign In</a>
+                                    Already have an account? <a href="index.php" class="text-danger">Sign In</a>
                                 </div>
                             </div>
                         </form>

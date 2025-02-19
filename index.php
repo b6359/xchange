@@ -68,7 +68,7 @@ if (!empty($_POST['username']) && !empty($_POST['password'])) {
     <meta name="author" content="">
     <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon.png">
     <title><?php echo htmlspecialchars($_SESSION['CNAME']); ?> - Web Exchange System</title>
-    <link href="./dist/css/style.min.css" rel="stylesheet">
+    <link href="./dist/css/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -81,7 +81,8 @@ if (!empty($_POST['username']) && !empty($_POST['password'])) {
         </div>
         <div class="auth-wrapper d-flex no-block justify-content-center align-items-center position-relative">
             <div class="auth-box row">
-                <div class="col-lg-7 col-md-5 modal-bg-img" style="background: url(./assets/images/big/3.jpg) no-repeat center center;;">
+                <div class="col-lg-7 col-md-5 modal-bg-img d-lg-flex align-items-center">
+                    <img src="./assets/images/Logo.png" alt="wrapkit">
                 </div>
                 <div class="col-lg-5 col-md-7 bg-white">
                     <div class="p-3">
@@ -115,7 +116,7 @@ if (!empty($_POST['username']) && !empty($_POST['password'])) {
                                     <button type="submit" name="commit" class="btn w-100 btn-dark">Sign In</button>
                                 </div>
                                 <div class="col-lg-12 text-center mt-5">
-                                Nuk keni një llogari? <a href="#" class="text-danger">Sign Up</a>
+                                Nuk keni një llogari? <a href="signup.php" class="text-danger">Sign Up</a>
                                 </div>
                             </div>
                         </form>
