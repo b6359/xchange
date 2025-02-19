@@ -33,7 +33,9 @@ $row_klienti_info = $klienti_info->fetch_assoc();
                     </div>
                   </div>
                   <div class="col-md-1">
-                    <a href="javascript:void(0)"><i class="fas fa-user cursor-pointer" data-bs-toggle="modal" data-bs-target="#myModal"></i></a>
+                    <a class="btn btn-outline-primary" href="javascript:void(0)">
+                      <i class="fas fa-user cursor-pointer" data-bs-toggle="modal" data-bs-target="#myModal"></i>
+                    </a>
                   </div>
                 </div>
                 <label class="form-label">Shfaq </label>
