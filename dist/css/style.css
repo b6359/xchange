@@ -17823,3 +17823,8 @@ strong {
   font-weight: normal;
   font-style: normal;
 }
+.tab-menu-seaction{
+  padding: 15px;
+  background: #ffffff;
+  margin-right: 20px;
+}
