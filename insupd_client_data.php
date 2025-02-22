@@ -276,46 +276,46 @@ if (isset($_SESSION['uid'])) {
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="tipdokumenti" class="col-form-label">Tip dokumenti:</label>
-                <select name="tipdokumenti" id="tipdokumenti" class="form-select">
-                  <option value="0" <?php if (!(strcmp("0", $tipdokumenti))) echo "SELECTED"; ?>>Pasaporte</option>
-                  <option value="1" <?php if (!(strcmp("1", $tipdokumenti))) echo "SELECTED"; ?>>Leternjoftim</option>
-                  <option value="2" <?php if (!(strcmp("2", $tipdokumenti))) echo "SELECTED"; ?>>Certifikate</option>
-                  <option value="3" <?php if (!(strcmp("3", $tipdokumenti))) echo "SELECTED"; ?>>Karte Kombe tare Identiteti</option>
-                  <option value="4" <?php if (!(strcmp("4", $tipdokumenti))) echo "SELECTED"; ?>>Patente</option>
-                </select>
+              <select name="tipdokumenti" id="tipdokumenti" class="form-select">
+                <option value="0" <?php if (!(strcmp("0", $tipdokumenti))) echo "SELECTED"; ?>>Pasaporte</option>
+                <option value="1" <?php if (!(strcmp("1", $tipdokumenti))) echo "SELECTED"; ?>>Leternjoftim</option>
+                <option value="2" <?php if (!(strcmp("2", $tipdokumenti))) echo "SELECTED"; ?>>Certifikate</option>
+                <option value="3" <?php if (!(strcmp("3", $tipdokumenti))) echo "SELECTED"; ?>>Karte Kombe tare Identiteti</option>
+                <option value="4" <?php if (!(strcmp("4", $tipdokumenti))) echo "SELECTED"; ?>>Patente</option>
+              </select>
             </div>
             <div class="col-md-6">
               <label for="nrpashaporte" class="col-form-label">Nr. Dokumenti:</label>
-                <input name="nrpashaporte" type="text" class="form-control" id="nrpashaporte" value="<?php echo $nrpashaporte; ?>" maxlength="50">
+              <input name="nrpashaporte" type="text" class="form-control" id="nrpashaporte" value="<?php echo $nrpashaporte; ?>" maxlength="50">
             </div>
           </div>
 
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="nipt" class="col-form-label">NIPT:</label>
-                <input name="nipt" type="text" class="form-control" id="nipt" value="<?php echo $nipt; ?>" maxlength="10">
+              <input name="nipt" type="text" class="form-control" id="nipt" value="<?php echo $nipt; ?>" maxlength="10">
             </div>
             <div class="col-md-6">
               <label for="telefon" class="col-form-label">Telefon:</label>
-                <input name="telefon" type="text" class="form-control" id="telefon" value="<?php echo $telefon; ?>" maxlength="50">
+              <input name="telefon" type="text" class="form-control" id="telefon" value="<?php echo $telefon; ?>" maxlength="50">
             </div>
           </div>
 
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="fax" class="col-form-label">Fax:</label>
-                <input name="fax" type="text" class="form-control" id="fax" value="<?php echo $fax; ?>" maxlength="50">
+              <input name="fax" type="text" class="form-control" id="fax" value="<?php echo $fax; ?>" maxlength="50">
             </div>
             <div class="col-md-6">
               <label for="email" class="col-form-label">E-mail:</label>
-                <input name="email" type="text" class="form-control" id="email" value="<?php echo $email; ?>" maxlength="100">
+              <input name="email" type="text" class="form-control" id="email" value="<?php echo $email; ?>" maxlength="100">
             </div>
           </div>
 
           <div class="row mb-3">
             <div class="col-md-12">
               <label for="adresa" class="col-sm-2 col-form-label">Adresa:</label>
-                <textarea name="adresa" class="form-control" id="adresa" cols="34" rows="5"><?php echo $adresa; ?></textarea>
+              <textarea name="adresa" class="form-control" id="adresa" cols="34" rows="5"><?php echo $adresa; ?></textarea>
             </div>
           </div>
 

@@ -62,8 +62,7 @@ if (isset($_GET['action']) && ($_GET['action'] == "del")) {
                   <th scope="col">Filiali</th>
                   <th scope="col">Kod. Llogarie</th>
                   <th scope="col">Menaxher</th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
+                  <th scope="col">Veprimi</th>
                 </tr>
               </thead>
               <tbody>
@@ -83,12 +82,10 @@ if (isset($_GET['action']) && ($_GET['action'] == "del")) {
                     <td>
                       <b><?php echo $row_h_menu['administrator']; ?></b>
                     </td>
-                    <td align="center">
+                    <td align="center" class="d-flex  justify-content-evenly">
                       <div class="cursor-pointer" onclick="openModal('upd', <?php echo $row_h_menu['id']; ?>)">
                         <i class="fa fa-pen-square"></i>
                       </div>
-                    </td>
-                    <td align="center">
                       <div class="cursor-pointer" onClick="JavaScript: do_delete(<?php echo $row_h_menu['id']; ?>);">
                         <i class="fa fa-trash text-danger"></i>
                       </div>
@@ -113,8 +110,11 @@ if (isset($_GET['action']) && ($_GET['action'] == "del")) {
       </div>
       <div class="tab-pane" id="Llogaritë">
         <div class="card">
-          <div class="card-body">
+          <div class="card-body d-flex align-items-center justify-content-between">
             <h4 class="card-title">Administrimi i llogarive</h4>
+            <button class="btn btn-outline-primary" onclick="openAccountsModal('ins')">
+              <i class="fas fa-plus cursor-pointer"></i> Shto Llogari
+            </button>
           </div>
           <?php include 'exchange_llogari.php'; ?>
         </div>
@@ -134,8 +134,11 @@ if (isset($_GET['action']) && ($_GET['action'] == "del")) {
       </div>
       <div class="tab-pane" id="Monedhat">
         <div class="card">
-          <div class="card-body">
+          <div class="card-body d-flex align-items-center justify-content-between">
             <h4 class="card-title">Administrimi i monedhave</h4>
+            <button class="btn btn-outline-primary" onclick="openAddCurrencyModal('ins')">
+              <i class="fas fa-plus cursor-pointer"></i> Shto Monedhat
+            </button>
           </div>
           <?php include 'exchange_currency.php'; ?>
         </div>

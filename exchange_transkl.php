@@ -54,6 +54,7 @@ if ((isset($_GET['doLogout'])) && ($_GET['doLogout'] == "true")) {
 <link rel="stylesheet" href="calendar.css">
 <div class="page-wrapper">
     <div class="container-fluid">
+    <form action="exchange_transkl.php" method="POST" name="formmenu" target="_self">
         <div class="card">
             <div class="card-body d-flex align-items-center justify-content-between" >
                 <h4 class="card-title">
@@ -71,8 +72,8 @@ if ((isset($_GET['doLogout'])) && ($_GET['doLogout'] == "true")) {
                             o_cal.a_tpl.weekstart = 1;
                         </script>
                     </lable>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input name="repdata" class="btn btn-info d-block ms-auto inputtext4" type="submit" value=" Shfaq transaksionet ... ">                            
+                    
+                    <input name="repdata" class="btn btn-info d-block ms-auto inputtext4" type="submit" value=" Shfaq transaksionet">                            
                 </div>
                 <!-- <a class="btn btn-outline-primary" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#AddNewUserModal">
                     <i class="fas fa-plus cursor-pointer"></i>
@@ -82,14 +83,14 @@ if ((isset($_GET['doLogout'])) && ($_GET['doLogout'] == "true")) {
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <td class="OraColumnHeader"> Nr. fature </td>
-                            <td class="OraColumnHeader"> Dat&euml; </td>
-                            <td class="OraColumnHeader"> Llogaria </td>
-                            <td class="OraColumnHeader"> Shuma e Bler&euml; </td>
-                            <td class="OraColumnHeader"> Kursi </td>
-                            <td class="OraColumnHeader"> Shuma e Shitur </td>
-                            <td class="OraColumnHeader"> P&euml;rdoruesi </td>
-                            <td class="OraColumnHeader"> </td>
+                            <td> Nr. fature </td>
+                            <td> Dat&euml; </td>
+                            <td> Llogaria </td>
+                            <td> Shuma e Bler&euml; </td>
+                            <td> Kursi </td>
+                            <td> Shuma e Shitur </td>
+                            <td> P&euml;rdoruesi </td>
+                            <td> </td>
                         </tr>
                     </thead>
                     <tbody>
@@ -125,6 +126,7 @@ if ((isset($_GET['doLogout'])) && ($_GET['doLogout'] == "true")) {
                             $RepInfoRS   = $MySQL->query($RepInfo_sql) or die(mysqli_error($MySQL));
                             $row_RepInfo = $RepInfoRS->fetch_assoc();
 
+                            $rowno = 0;
                             while ($row_RepInfo) {
                             $rowno++;
 
@@ -162,5 +164,16 @@ if ((isset($_GET['doLogout'])) && ($_GET['doLogout'] == "true")) {
                 </table>
             </div>
         </div>
+    </form>
     </div>
     <?php include 'footer.php'; ?>
+    <script>
+    function do_delete(value) {
+        var flag = false;
+
+        flag = confirm('Jeni i sigurte per fshirjen e ketij rekordi ?!. ');
+
+        if (flag == true) {
+          window.location = 'exchange_transkl.php?action=del&dt=<?php echo $v_date; ?>&tid=' + value;
+        }
+      }</script>

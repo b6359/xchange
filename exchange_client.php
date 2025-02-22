@@ -52,13 +52,13 @@ if (isset($_GET['action']) && $_GET['action'] === "del") {
   <div class="responsive-table">
     <table class="table table-bordered">
       <tr>
-        <th class="OraColumnHeader"> Emri </th>
-        <th class="OraColumnHeader"> Mbiemri </th>
-        <th class="OraColumnHeader"> Kompani</th>
-        <th class="OraColumnHeader"> Telefon </th>
-        <th class="OraColumnHeader"> Nr. Dokumenti </th>
-        <th class="OraColumnHeader"> Dokumenti </th>
-        <th class="OraColumnHeader">Veprimi</th>
+        <th> Emri </th>
+        <th> Mbiemri </th>
+        <th> Kompani</th>
+        <th> Telefon </th>
+        <th> Nr. Dokumenti </th>
+        <th> Dokumenti </th>
+        <th>Veprimi</th>
       </tr>
       <?php
 
