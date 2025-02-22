@@ -33,8 +33,8 @@ $row_klienti_info = $klienti_info->fetch_assoc();
                     </div>
                   </div>
                   <div class="col-md-1">
-                    <a class="btn btn-outline-primary" href="javascript:void(0)">
-                      <i class="fas fa-user cursor-pointer" data-bs-toggle="modal" data-bs-target="#myModal"></i>
+                    <a class="btn btn-outline-primary" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#myModal">
+                      <i class="fas fa-user cursor-pointer" ></i>
                     </a>
                   </div>
                 </div>

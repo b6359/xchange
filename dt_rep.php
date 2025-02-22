@@ -35,7 +35,7 @@
                     </div>
                   </div>
                   <div class="col-md-1">
-                    <a class="btn btn-outline-primary" href="JavaScript: Open_Filial_Window();">
+                    <a class="btn btn-outline-primary" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#myModal">
                       <i class="fa fa-file-alt"></i>
                     </a>
                   </div>
@@ -89,6 +89,81 @@
             </form>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Llogaria</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"
+          aria-hidden="true"></button>
+      </div>
+      <div class="modal-body">
+
+        <?php
+
+        require_once('ConMySQL.php');
+
+        $v_wheresql = " ";
+        if ($_SESSION['Usertype'] == 3)  $v_wheresql = " where id = " . $_SESSION['Userfilial'] . " ";
+
+        $query_filiali_info = "select * from filiali " . $v_wheresql . " order by filiali asc";
+        $filiali_info = mysqli_query($MySQL, $query_filiali_info) or die(mysqli_error($MySQL));
+        $row_filiali_info = mysqli_fetch_assoc($filiali_info);
+
+        ?>
+        <table class="table table-bordered" width="300" height="100%" border="0">
+          <tr>
+            <td height="43" colspan="3">
+              <DIV class=ctxheading>Perzgjidh nga lista</DIV>
+            </td>
+          </tr>
+          <tr valign="top">
+            <td width="80%" align="center">
+
+              <table width="300" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td height="1" width="10" align="center" class="titull"></td>
+                  <td height="1" width="280" align="center" class="titull"></td>
+                  <td height="1" width="10" align="center" class="titull"></td>
+                </tr>
+                <?php while ($row_filiali_info) {  ?>
+                  <tr bgcolor="#080570">
+                    <td height="1" colspan="3" align="center" class="titull"></td>
+                  </tr>
+                  <tr bgcolor="#99FFCC">
+                    <td class="titull"></td>
+                    <td height="16">
+                        <a href="javascript:void(0)" 
+                           onclick="document.getElementById('id_llogfilial').value='<?php echo $row_filiali_info['id']; ?>'; 
+                                   document.querySelector('[data-bs-dismiss=modal]').click();" 
+                           class="link4">
+                            <b><?php echo $row_filiali_info['filiali']; ?></b>
+                        </a>
+                    </td>
+                    <td class="titull"></td>
+                  </tr>
+                <?php $row_filiali_info = mysqli_fetch_assoc($filiali_info);
+                }
+                mysqli_free_result($filiali_info);
+                ?>
+                <tr bgcolor="#080570">
+                  <td height="1" colspan="3" align="center" class="titull"></td>
+                </tr>
+                <tr>
+                  <td height="5" colspan="3" align="center" class="titull"></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

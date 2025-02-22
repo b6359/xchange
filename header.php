@@ -358,7 +358,7 @@ if (isset($_SESSION['uid'])) {
             <li class="sidebar-item">
               <a
                 class="sidebar-link"
-                href="exchange_basedata.php"
+                href="exchange_account.php"
                 aria-expanded="false"><i class="fas fa-database"></i><span class="hide-menu">Të Dhënat Bazë</span></a>
             </li>
             <li class="list-divider"></li>

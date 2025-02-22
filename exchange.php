@@ -672,7 +672,7 @@
                     <div class="col-md-3">
                       <div class="form-group mb-3">
                         <lable class="form-label">Shuma:&nbsp;</lable>
-                        <input class="form-control" name="vleftadebituar" type="text" class="inputtext2" id="vleftadebituar" value=".00" size="15" onChange="JavaScript: if (document.formmenu.id_monkreditim.value != '999')  calculate_rate_value (); " onKeyDown="if (event.keyCode == 13) document.formmenu.insupd.focus(); ">
+                        <input class="form-control text-end" name="vleftadebituar" type="text" class="inputtext2" id="vleftadebituar" value=".00" size="15" onChange="JavaScript: if (document.formmenu.id_monkreditim.value != '999')  calculate_rate_value (); " onKeyDown="if (event.keyCode == 13) document.formmenu.insupd.focus(); ">
                       </div>
                     </div>
                   </div>
@@ -710,7 +710,7 @@
                             <div class="d-flex align-items-center">
                                 <input class="form-control" name="kursi_txt" type="text" class="inputtext5" id="kursi_txt" value="LEK/" size="10" readonly>
                                 <span class="d-block px-2">=</span>
-                                <input class="form-control" name="kursi" type="text" class="inputtext2" id="kursi" value="" size="10" OnChange="JavaScript: calculate_rate_value3 (); calculate_value ();">
+                                <input class="form-control text-end" name="kursi" type="text" class="inputtext2" id="kursi" value="" size="10" OnChange="JavaScript: calculate_rate_value3 (); calculate_value ();">
                             </div>
                         </div>
                     </div>
@@ -720,7 +720,7 @@
                     <div class="col-md-3">
                       <div class="form-group mb-3">
                         <lable class="form-label">Totali: &nbsp;</lable>
-                        <input class="form-control" name="vleftakredituar" type="text" class="inputtext2" id="vleftakredituar" value="0.00" size="15" readonly>
+                        <input class="form-control text-end" name="vleftakredituar" type="text" class="inputtext2" id="vleftakredituar" value="0.00" size="15" readonly>
                       </div>
                     </div>
                     <div class="col-md-3">
@@ -729,7 +729,7 @@
                         <div class="d-flex align-items-center">
                             <input class="form-control" name="kursi1_txt" type="text" class="inputtext5" id="kursi1_txt" value="/LEK" size="10" readonly>
                             <span class="d-block px-2">=</span>
-                            <input class="form-control" name="kursi1" type="text" class="inputtext2" id="kursi1" value="" size="10" OnChange="JavaScript: calculate_rate_value2 (); calculate_value ();">
+                            <input class="form-control text-end" name="kursi1" type="text" class="inputtext2" id="kursi1" value="" size="10" OnChange="JavaScript: calculate_rate_value2 (); calculate_value ();">
                         </div>
                       </div>
                     </div>
@@ -739,9 +739,9 @@
                       <div class="form-group mb-3">
                         <lable class="form-label">Komisioni: &nbsp;</lable>
                         <div class="d-flex align-items-center">
-                            <input class="form-control" name="perqindjekomisioni" type="text" class="inputtext2" id="perqindjekomisioni" value="0.00" size="4" OnChange="JavaScript: llogarit_komisionin ();">
+                            <input class="form-control text-end" name="perqindjekomisioni" type="text" class="inputtext2" id="perqindjekomisioni" value="0.00" size="4" OnChange="JavaScript: llogarit_komisionin ();">
                             <span class="d-block px-2">%</span>
-                            <input class="form-control" name="vleftakomisionit" type="text" class="inputtext2" id="vleftakomisionit" value="0.00" size="10" onChange="JavaScript: llogarit_komisionin_fix ();">
+                            <input class="form-control text-end" name="vleftakomisionit" type="text" class="inputtext2" id="vleftakomisionit" value="0.00" size="10" onChange="JavaScript: llogarit_komisionin_fix ();">
                         </div>
                       </div>
                     </div>                  
@@ -752,7 +752,7 @@
                         <div class="row ctxheading">
                             <div class="col-md-6">
                                 <lable class="form-label">P&euml;r t'u paguar:&nbsp;</lable>
-                                <input class="form-control" name="vleftapaguar" type="text" class="inputtext2" id="vleftapaguar" value="0.00" size="15" onChange="JavaScript: llogarit_mbrapsht ();">
+                                <input class="form-control text-end" name="vleftapaguar" type="text" class="inputtext2" id="vleftapaguar" value="0.00" size="15" onChange="JavaScript: llogarit_mbrapsht ();">
                             </div >
                             <div class="col-md-6">
                                 <lable class="form-label">Burimi i t&euml; ardhurave:&nbsp;</lable>
@@ -827,7 +827,8 @@
                                             </tr>
                                             <tr bgcolor="#99FFCC">
                                                 <td class="titull"></td>
-                                                <td height="16"><a href="JavaScript: return_value('<?php echo $row_filiali_info['id']; ?>');" class="link4"><b><?php echo $row_filiali_info['filiali']; ?></b></a></td>
+                                                <td height="16"><a href="JavaScript: return_value('<?php echo $row_filiali_info['id']; ?>');"  onclick="document.getElementById('id_llogfilial').value='<?php echo $row_filiali_info['id']; ?>'; 
+                                   document.querySelector('[data-bs-dismiss=modal]').click();"  class="link4"><b><?php echo $row_filiali_info['filiali']; ?></b></a></td>
                                                 <td class="titull"></td>
                                             </tr>
                                         <?php $row_filiali_info = mysqli_fetch_assoc($filiali_info);

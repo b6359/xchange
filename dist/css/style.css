@@ -17828,3 +17828,6 @@ strong {
   background: #ffffff;
   margin-right: 20px;
 }
+.cursor-pointer{
+  cursor: pointer;
+}
