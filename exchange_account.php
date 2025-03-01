@@ -102,8 +102,16 @@ if (isset($_GET['action']) && ($_GET['action'] == "del")) {
       </div>
       <div class="tab-pane" id="Hapjebalance">
         <div class="card">
-          <div class="card-body">
+          <div class="card-body d-flex align-items-center justify-content-between">
             <h4 class="card-title">Hapje balance</h4>
+            <div class="d-flex align-items-center">
+              <button class="btn btn-outline-primary" onclick="printOpenBalance()">
+                <i class="fas fa-print cursor-pointer"></i> Printo
+              </button>
+              <button class="btn btn-outline-primary ms-3" onclick="openOpenBalanceModal('ins')">
+                <i class="fas fa-plus cursor-pointer"></i> Shto Balance
+              </button>
+            </div>
           </div>
           <?php include 'exchange_openbal.php'; ?>
         </div>

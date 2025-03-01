@@ -14,16 +14,15 @@ $_SESSION['DPPPP'] = "1000000";
 
 $loginFormAction = $_SERVER['PHP_SELF'];
 
-if (!empty($_POST['username']) && !empty($_POST['password'])) {
+if (!empty($_POST['email']) && !empty($_POST['password'])) {
 
-    $loginUsername = $_POST['username'];
+    $loginEmail = $_POST['email'];
     $password = $_POST['password'];
 
     // Sanitize input to prevent SQL injection
-    $loginUsername = preg_replace("/[\\'\"<>-]/", '', $loginUsername);
     $password = preg_replace("/[\\'\"<>-]/", '', $password);
 
-    $MM_redirectLoginSuccess = "info.php";
+    $MM_redirectLoginSuccess = "exchange.php";
     $MM_redirectLoginFailed = "index.php";
 
     $conn = new mysqli($hostname_MySQL, $username_MySQL, $password_MySQL, $database_MySQL);
@@ -32,8 +31,8 @@ if (!empty($_POST['username']) && !empty($_POST['password'])) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $stmt = $conn->prepare("SELECT id, username, full_name, id_trans, id_filiali, id_usertype FROM app_user WHERE username=? AND password=?");
-    $stmt->bind_param("ss", $loginUsername, $password);
+    $stmt = $conn->prepare("SELECT id, username, full_name, id_trans, id_filiali, id_usertype FROM app_user WHERE e_mail=? AND password=?");
+    $stmt->bind_param("ss", $loginEmail, $password);
     $stmt->execute();
     $result = $stmt->get_result();
     if ($result->num_rows > 0) {
@@ -100,24 +99,24 @@ if (!empty($_POST['username']) && !empty($_POST['password'])) {
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group mb-3">
-                                        <label class="form-label text-dark" for="uname">Perdoruesi</label>
-                                        <input class="form-control" id="username" name="username" type="text"
-                                            placeholder="enter your username">
+                                        <label class="form-label text-dark" for="uname">Email</label>
+                                        <input class="form-control" id="email" name="email" type="text"
+                                            placeholder="Enter your email">
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group mb-3">
                                         <label class="form-label text-dark" for="password">Fjalëkalimin</label>
                                         <input class="form-control" id="password" name="password" type="password"
-                                            placeholder="enter your password">
+                                            placeholder="Enter your password">
                                     </div>
                                 </div>
                                 <div class="col-lg-12 text-center">
                                     <button type="submit" name="commit" class="btn w-100 btn-dark">Sign In</button>
                                 </div>
-                                <div class="col-lg-12 text-center mt-5">
+                                <!-- <div class="col-lg-12 text-center mt-5">
                                 Nuk keni një llogari? <a href="signup.php" class="text-danger">Sign Up</a>
-                                </div>
+                                </div> -->
                             </div>
                         </form>
                     </div>

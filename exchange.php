@@ -535,7 +535,6 @@
     </script>
 
     <script language="JavaScript">
-        <!-- Begin
         function Open_Filial_Window() {
 
             childWindow = window.open('filial_list.php', 'FilialList',
@@ -548,8 +547,6 @@
                 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=335,height=350');
         }
 
-        //  End 
-        -->
     </script>
         
 <script language="JavaScript" src="calendar_eu.js"></script>
@@ -561,7 +558,7 @@
                 <span class="hide-menu">Shto klient</span>
             </a>
             <a href="exchange_trans.php" class="tab-menu-seaction sidebar-link">
-                <span class="hide-menu"> Raport për Klient</span>
+                <span class="hide-menu">Lista e transaksioneve</span>
             </a>
         </ul>
       <div class="row">
@@ -574,13 +571,13 @@
                 <input name="total_value" type="hidden" value="">
                 <div class="form-body">
                   <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                       <div class="form-group mb-3">
                       <lable class="form-label">Grup Trans.:&nbsp;</lable>
                         <input class="form-control"name="id_trans" type="text" id="id_trans" value="<?php echo $_SESSION['Usertrans']; ?>" size="10" readonly>
                       </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                       <div class="form-group mb-3">
                         <lable class="form-label">Dat&euml;:&nbsp;</lable>
                         <div class="d-flex align-items-center">
@@ -598,7 +595,7 @@
                     </div>                 
                   </div>
                   <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                       <div class="form-group mb-3">
                         <lable class="form-label">Filiali:&nbsp;</lable>
                         <div class="d-flex align-items-center">
@@ -622,7 +619,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                       <div class="form-group mb-3">
                         <lable class="form-label">Klienti:&nbsp;</lable>
                         <div class="d-flex align-items-center">
@@ -647,7 +644,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                       <div class="form-group mb-3">
                         <lable class="form-label">Blej:&nbsp;&nbsp;&nbsp;&nbsp;</lable>
                         <select class="form-select mr-sm-2" name="id_mondebituar" id="id_mondebituar" OnChange="JavaScript: disp_kursitxt( document.formmenu.id_mondebituar.value, document.formmenu.id_monkreditim.value, '/');  calculate_rate_value (); ">
@@ -669,7 +666,7 @@
                         </select>
                       </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                       <div class="form-group mb-3">
                         <lable class="form-label">Shuma:&nbsp;</lable>
                         <input class="form-control text-end" name="vleftadebituar" type="text" class="inputtext2" id="vleftadebituar" value=".00" size="15" onChange="JavaScript: if (document.formmenu.id_monkreditim.value != '999')  calculate_rate_value (); " onKeyDown="if (event.keyCode == 13) document.formmenu.insupd.focus(); ">
@@ -677,7 +674,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                       <div class="form-group mb-3">
                         <lable class="form-label">Shitje:&nbsp;&nbsp;</lable>
                         <select class="form-select mr-sm-2" name="id_monkreditim" id="id_monkreditim" OnChange="JavaScript: disp_kursitxt( document.formmenu.id_mondebituar.value, document.formmenu.id_monkreditim.value, '/'); calculate_rate_value ();" onKeyDown="if (event.keyCode == 13) document.formmenu.insupd.focus(); ">
@@ -704,7 +701,7 @@
                           </select>
                       </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                       <div class="form-group mb-3">
                             <lable class="form-label">Kursi: &nbsp;</lable>
                             <div class="d-flex align-items-center">
@@ -717,13 +714,13 @@
                   </div>
                   <input name="hkursi" type="hidden" id="hkursi" value="">
                   <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                       <div class="form-group mb-3">
                         <lable class="form-label">Totali: &nbsp;</lable>
                         <input class="form-control text-end" name="vleftakredituar" type="text" class="inputtext2" id="vleftakredituar" value="0.00" size="15" readonly>
                       </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                       <div class="form-group mb-3">
                         <lable class="form-label">Kursi: &nbsp;</lable>
                         <div class="d-flex align-items-center">
@@ -735,7 +732,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                       <div class="form-group mb-3">
                         <lable class="form-label">Komisioni: &nbsp;</lable>
                         <div class="d-flex align-items-center">
@@ -747,7 +744,7 @@
                     </div>                  
                   </div>
                   <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                       <div class="form-group mb-3">
                         <div class="row ctxheading">
                             <div class="col-md-6">

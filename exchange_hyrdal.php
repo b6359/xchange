@@ -201,6 +201,11 @@ if (isset($_SESSION['uid']) && ($_SESSION['Usertype'] ?? '') !== '3') {
     </script>
     <div class="page-wrapper">
         <div class="container-fluid">
+        <ul class="first-level base-level-line d-flex">
+            <a href="exchange_transhd.php" class="tab-menu-seaction sidebar-link">
+                <span class="hide-menu">Lista e veprimeve</span>
+            </a>
+        </ul>
             <div class="card">
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <h4 class="card-title">

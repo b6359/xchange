@@ -1,7 +1,7 @@
 <?php
 
 $hostname_MySQL = "localhost";
-$database_MySQL = "change";
+$database_MySQL = "xchange";
 $username_MySQL = "root";
 $password_MySQL = "";
 $port = 3306; // Default MySQL port

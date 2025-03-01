@@ -66,7 +66,7 @@ if ((isset($_GET['doLogout'])) && ($_GET['doLogout'] == "true")) {
             <div class="card">
                 <div class="card-body d-flex align-items-center justify-content-between" >
                     <h4 class="card-title">
-                        <b>Lista e transaksioneve</b>
+                        <b>Lista e veprimeve monetare</b>
                     </h4>
                     <div class="d-flex align-items-center">                    
                         <label class="d-flex align-items-center">P&euml;rzgjidh dat&euml;n:
