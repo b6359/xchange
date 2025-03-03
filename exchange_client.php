@@ -22,28 +22,7 @@ if (isset($_GET['action']) && $_GET['action'] === "del") {
 }
 ?>
 
-<script>
-  function openClientModal(action, id = null) {
-    let url = 'insupd_client_data.php?action=' + action;
-    if (id) {
-      url += '&hid=' + id;
-    }
 
-    // Load content into modal
-    $.get(url, function(data) {
-      $('#clientModal .modal-body').html(data);
-      $('#clientModal').modal('show');
-    });
-  }
-
-  function do_deleteClient(value) {
-    var flag = false;
-    flag = confirm('Jeni i sigurte per fshirjen e ketij rekordi ?!. ');
-    if (flag == true) {
-      window.location = 'exchange_client.php?action=del&hid=' + value;
-    }
-  }
-</script>
 
 <form ACTION="exchange_client.php" METHOD="POST" name="formmenu">
   <div class="col-md-3 ps-7 mb-3">
@@ -145,7 +124,7 @@ if (isset($_GET['action']) && $_GET['action'] === "del") {
   </div>
 </form>
 
-<div class="modal fade" id="clientModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel" aria-hidden="true">
+<div class="modal fade" id="clientModal" tabindex="-1" role="dialog" aria-labelledby="clientModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -158,3 +137,27 @@ if (isset($_GET['action']) && $_GET['action'] === "del") {
     </div>
   </div>
 </div>
+<script>
+  function openClientModal(action, id = null) {
+    console.log('openClientModal called with action:', action, 'and id:', id); // Debugging line
+    let url = 'insupd_client_data.php?action=' + action;
+    if (id) {
+      url += '&hid=' + id;
+    }
+
+    // Load content into modal
+    $('#clientModal').modal('hide'); // Hide any open modal
+    $.get(url, function(data) {
+      $('#clientModal .modal-body').html(data);
+      $('#clientModal').modal('show');
+    });
+  }
+
+  function do_deleteClient(value) {
+    var flag = false;
+    flag = confirm('Jeni i sigurte per fshirjen e ketij rekordi ?!. ');
+    if (flag == true) {
+      window.location = 'exchange_client.php?action=del&hid=' + value;
+    }
+  }
+</script>

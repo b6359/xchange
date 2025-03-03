@@ -103,7 +103,6 @@ if (isset($_SESSION['uid'])) {
                                             $row_RepInfo = $RepInfoRS->fetch_assoc();
 
                                             while ($row_RepInfo) {
-                                                $rowno++;
                                                 $v_kursi = 0;
                                                 if ($row_RepInfo['kursi'] > $row_RepInfo['kursi1']) {
                                                     $v_kursi = $row_RepInfo['kursi'];

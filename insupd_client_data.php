@@ -3,7 +3,7 @@ require_once('ConMySQL.php');
 //initialize the session
 session_start();
 
-if (isset($_SESSION['uid'])) {
+
 
   $id            = "";
   $emri          = "";
@@ -238,14 +238,14 @@ if (isset($_SESSION['uid'])) {
             <div class="col-md-6">
               <label for="dob" class="col-form-label">Datëlindja:</label>
               <input name="dob" type="text" class="form-control" placeholder="dd.mm.yyyy" id="dob" value="<?php echo $dob; ?>" maxlength="10">
-              <script language="JavaScript">
-                var o_cal = new tcal({
-                  'formname': 'formmenu',
-                  'controlname': 'dob'
-                });
-                o_cal.a_tpl.yearscroll = true;
-                o_cal.a_tpl.weekstart = 1;
-              </script>
+              <!-- <script language="JavaScript">
+                        var o_cal = new tcal({
+                          'formname': 'formmenu',
+                          'controlname': 'dob'
+                        });
+                        o_cal.a_tpl.yearscroll = true;
+                        o_cal.a_tpl.weekstart = 1;
+                      </script> -->
             </div>
             <div class="col-md-6">
               <label for="gender" class="col-form-label">Gjinia:</label>
@@ -339,6 +339,3 @@ if (isset($_SESSION['uid'])) {
     </div>
   </div>
   </div>
-<?php
-}
-?>

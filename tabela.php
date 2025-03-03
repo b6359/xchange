@@ -25,7 +25,7 @@ if (isset($_SESSION['Usertype'])) {
 ?>
 
 <script>
-  addEventListener("click", function() {
+ document.getElementById("tableContainer").addEventListener("click", function() {
     var el = document.documentElement;
     var rfs = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen;
     if (rfs) {
@@ -34,7 +34,7 @@ if (isset($_SESSION['Usertype'])) {
   });
 </script>
 
-<div class="container">
+<div class="container" id="tableContainer">
   <div class="row">
     <div class="col-12">
       <!-- Date and Time -->
@@ -101,26 +101,3 @@ if (isset($_SESSION['Usertype'])) {
     </div>
   </div>
 </div>
-
-<script>
-  // Disable right-click context menu
-  document.addEventListener('contextmenu', event => event.preventDefault());
-
-  // Disable certain keys
-  document.addEventListener('keydown', e => {
-    if (
-      e.keyCode === 112 || // F1
-      e.keyCode === 114 || // F3
-      e.keyCode === 116 || // F5
-      e.keyCode === 117 || // F6
-      e.keyCode === 118 || // F7
-      e.keyCode === 121 || // F10
-      e.keyCode === 123 || // F12
-      e.ctrlKey || e.shiftKey || e.altKey ||
-      (e.ctrlKey && e.shiftKey) ||
-      (e.ctrlKey && e.shiftKey && e.altKey)
-    ) {
-      e.preventDefault();
-    }
-  });
-</script>

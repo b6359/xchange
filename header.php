@@ -71,7 +71,7 @@ if (isset($_SESSION['uid'])) {
   <script src="./dist/js/custom.min.js"></script>
   <script src="./assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
   <script src="./assets/extra-libs/datatables.net-bs4/js/dataTables.responsive.min.js"></script>
-  <script src="./dist/js/pages/datatable/datatable-basic.init.js"></script>
+  <script src="./dist/js/pages/datatable/datatable-basic.init.js"></script>  
 </head>
 
 <body>
@@ -130,6 +130,11 @@ if (isset($_SESSION['uid'])) {
             <!-- ============================================================== -->
             <!-- User profile and search -->
             <!-- ============================================================== -->
+            <li class="nav-item d-none d-md-block">
+              <a class="nav-link" href="exchange_tabel.php">
+                TABELA
+              </a>
+            </li>
             <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
@@ -299,16 +304,12 @@ if (isset($_SESSION['uid'])) {
                 href="exchange_users.php"
                 aria-expanded="false"><i class="fas fa-users"></i><span class="hide-menu">Përdoruesit</span></a>
             </li>
-            <li class="sidebar-item">
-              <a
-                class="sidebar-link sidebar-link"
-                href="exchange_tabel.php"
-                aria-expanded="false"><i class="fas fa-table"></i><span class="hide-menu">TABELA</span></a>
-            </li>
+            
             <li class="sidebar-item">
               <a
                 class="sidebar-link sidebar-link"
                 href="exchange_tabel_live.php"
+                target="_blank"
                 aria-expanded="false"><i class="fas fa-table"></i><span class="hide-menu">TABELA LIVE</span></a>
             </li>
             <li class="sidebar-item">
