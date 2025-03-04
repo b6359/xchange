@@ -90,64 +90,56 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
   return $theValue;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
-if ((isset($_POST["form_action"])) && ($_POST["form_action"] == "upd")) {
-  $updateSQL = sprintf(
-    "UPDATE llogarite SET llogaria=%s, kodi=%s, tipi=%s, veprimi=%s, CHNVL=%s, CHNCO=%s, TRFVL=%s, tstatus=%s WHERE id=%s",
-    GetSQLValueString($_POST['llogaria'], "text"),
-    GetSQLValueString($_POST['kodi'], "text"),
-    GetSQLValueString($_POST['tipi'], "text"),
-    GetSQLValueString($_POST['veprimi'], "text"),
-    GetSQLValueString($_POST['CHNVL'], "text"),
-    GetSQLValueString($_POST['CHNCO'], "text"),
-    GetSQLValueString($_POST['TRFVL'], "text"),
-    GetSQLValueString($_POST['tstatus'], "text"),
-    GetSQLValueString($_POST['id'], "int")
-  );
-
-  //mysql_select_db($database_MySQL, $MySQL);
-  $Result1 = mysqli_query($MySQL, $updateSQL) or die(mysqli_error($MySQL));
-
-  $updateGoTo = "exchange_llogari.php";
-
-  if (isset($_SERVER['QUERY_STRING'])) {
-    $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
-    $updateGoTo .= $_SERVER['QUERY_STRING'];
-  }
-  header(sprintf("Location: %s", $updateGoTo));
-}
-
-
-if ((isset($_POST["form_action"])) && ($_POST["form_action"] == "ins")) {
-  $insertSQL = sprintf(
-    "INSERT INTO llogarite (llogaria, kodi, tipi, veprimi, CHNVL, CHNCO, TRFVL, tstatus) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-    GetSQLValueString($_POST['llogaria'], "text"),
-    GetSQLValueString($_POST['kodi'], "text"),
-    GetSQLValueString($_POST['tipi'], "text"),
-    GetSQLValueString($_POST['veprimi'], "text"),
-    GetSQLValueString($_POST['CHNVL'], "text"),
-    GetSQLValueString($_POST['CHNCO'], "text"),
-    GetSQLValueString($_POST['TRFVL'], "text"),
-    GetSQLValueString($_POST['tstatus'], "text")
-  );
-
-  //mysql_select_db($database_MySQL, $MySQL);
-  $Result1 = mysqli_query($MySQL, $insertSQL) or die(mysqli_error($MySQL));
-
-  $updateGoTo = "exchange_llogari.php";
-
-  if (isset($_SERVER['QUERY_STRING'])) {
-    $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
-    $updateGoTo .= $_SERVER['QUERY_STRING'];
-  }
-  header(sprintf("Location: %s", $updateGoTo));
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $response = array();
+    
+    try {
+        if ($_POST['action'] === 'ins') {
+            // Insert logic here
+            $sql = "INSERT INTO llogarite (kodi, llogaria, tipi, veprimi, CHNVL, CHNCO, tstatus) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($MySQL, $sql);
+            mysqli_stmt_bind_param($stmt, "sssssss", $_POST['kodi'], $_POST['llogaria'], $_POST['tipi'], $_POST['veprimi'], $_POST['CHNVL'], $_POST['CHNCO'], $_POST['tstatus']);
+            
+            if (mysqli_stmt_execute($stmt)) {
+                $response['success'] = true;
+                $response['message'] = "Record inserted successfully";
+            } else {
+                throw new Exception("Error inserting record");
+            }
+        } 
+        else if ($_POST['action'] === 'upd') {
+            // Update logic here
+            $sql = "UPDATE llogarite SET kodi = ?, llogaria = ?, tipi = ?, veprimi = ?, CHNVL = ?, CHNCO = ?, tstatus = ? WHERE id = ?";
+            $stmt = mysqli_prepare($MySQL, $sql);
+            mysqli_stmt_bind_param($stmt, "sssssssi", $_POST['kodi'], $_POST['llogaria'], $_POST['tipi'], $_POST['veprimi'], $_POST['CHNVL'], $_POST['CHNCO'], $_POST['tstatus'], $_POST['hid']);
+            
+            if (mysqli_stmt_execute($stmt)) {
+                $response['success'] = true;
+                $response['message'] = "Record updated successfully";
+            } else {
+                throw new Exception("Error updating record");
+            }
+        }
+        
+        mysqli_stmt_close($stmt);
+        
+    } catch (Exception $e) {
+        $response['success'] = false;
+        $response['message'] = $e->getMessage();
+    }
+    
+    echo json_encode($response);
+    exit();
 }
 
 
 
 ?>
-<form enctype="multipart/form-data" ACTION="insupd_llogari_data.php" METHOD="POST" name="formmenu" onsubmit="return checkform(this);">
-  <input name="form_action" type="hidden" value="<?php echo $_GET['action']; ?>">
-  <input name="id" type="hidden" value="<?php echo $id; ?>">
+<form id="accountForm" onsubmit="event.preventDefault(); submitAccountForm('accountForm');">
+  <input type="hidden" name="action" value="<?php echo $_GET['action']; ?>">
+  <?php if (isset($_GET['hid'])): ?>
+    <input type="hidden" name="hid" value="<?php echo $_GET['hid']; ?>">
+  <?php endif; ?>
   
   <div class="container-fluid">
     <div class="row mb-3">
@@ -217,7 +209,7 @@ if ((isset($_POST["form_action"])) && ($_POST["form_action"] == "ins")) {
 
     <div class="row">
       <div class="col-12 text-center">
-        <button type="submit" name="insupd" class="btn btn-primary">Ruaj Informacionin</button>
+        <button type="submit" class="btn btn-primary">Ruaj Informacionin</button>
       </div>
     </div>
   </div>

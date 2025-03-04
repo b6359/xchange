@@ -69,15 +69,7 @@ if (isset($_SESSION['uid'])) {
             <table class="table">
                 <tbody>
                     <tr>
-                        <td class="align-middle" width="188">
-                            <img src="images/logo.png" width="auto" height="36" class="ms-4">
-                        </td>
-                        <td class="align-middle">
-                            <img alt="" height="1" src="images/stretch.gif" width="5">
-                        </td>
-                        <td class="text-center align-middle">
-                            <span class="fw-bold"><?php echo $_SESSION['CNAME']; ?> - Web Exchange System</span>
-                        </td>
+                        
                         <td class="text-end align-middle">
                             <span class="text-muted">Printuar dt. </span>
                             <span class="fw-bold"><?php echo strftime('%Y-%m-%d'); ?></span>
@@ -141,7 +133,6 @@ if (isset($_SESSION['uid'])) {
                             <th>Emri / Mbiemri</th>
                             <th>Monedha</th>
                             <th colspan="3">Hyrë</th>
-                            <th colspan="3"></th>
                             <th colspan="3">Dalë</th>
                         </tr>
                     <?php } ?>
@@ -180,46 +171,25 @@ if (isset($_SESSION['uid'])) {
                             $v_kursi = $row_RepInfo['kursi1'];
                         }
                     ?>
+                       
                         <tr>
-                            <td height="0" colspan="12">
-                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                    <tr class="line">
-                                        <td height="0">
-                                            <div class=line></div>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"> <?php echo $rowno; ?> </td>
+                            <td class="text-center"> <?php echo $rowno;?> </td>
                             <td class="text-center"> <?php echo $row_RepInfo['id_llogfilial'] . "-" . $row_RepInfo['unique_id']; ?> </td>
                             <td class="text-center"> <?php echo substr($row_RepInfo['datarregjistrimit'], 8, 2) . "." . substr($row_RepInfo['datarregjistrimit'], 5, 2) . "." . substr($row_RepInfo['datarregjistrimit'], 0, 4) . " " . substr($row_RepInfo['datarregjistrimit'], 11, 8); ?> </td>
                             <td class="text-center"> <?php echo $row_RepInfo['emri']; ?> </td>
                             <td class="text-center"> <?php echo $row_RepInfo['mbiemri']; ?> </td>
                             <td class="text-center"> <?php echo $row_RepInfo['mon2']; ?> </td>
                             <td class="text-center"> <?php echo $row_RepInfo['mon1']; ?> </td>
-                            <td class="text-end"> <?php echo number_format($row_RepInfo['vleftadebituar'], 2, '.', ','); ?> </td>
-                            <td class="text-end"> <?php echo number_format($v_kursi, 4, '.', ','); ?> </td>
-                            <td class="text-end"> <?php echo number_format($row_RepInfo['vleftakredituar'], 2, '.', ','); ?> </td>
-                            <td class="text-end"> <?php echo number_format($row_RepInfo['vleftakomisionit'], 2, '.', ','); ?> </td>
-                            <td class="text-end"> <?php echo number_format($row_RepInfo['vleftapaguar'], 2, '.', ','); ?> </td>
+                            <td class="text-end"> <?php echo number_format((int)($row_RepInfo['vleftadebituar']), 2, '.', ','); ?> </td>
+                            <td class="text-end"> <?php echo number_format((int)$v_kursi, 4, '.', ','); ?> </td>
+                            <td class="text-end"> <?php echo number_format((int)$row_RepInfo['vleftakredituar'], 2, '.', ','); ?> </td>
+                            <td class="text-end"> <?php echo number_format((int)$row_RepInfo['vleftakomisionit'], 2, '.', ','); ?> </td>
+                            <td class="text-end"> <?php echo number_format((int)$row_RepInfo['vleftapaguar'], 2, '.', ','); ?> </td>
                         </tr>
                     <?php $row_RepInfo = $RepInfoRS->fetch_assoc();
                     };
                     mysqli_free_result($RepInfoRS);
                     ?>
-                    <tr>
-                        <td height="0" colspan="12">
-                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                <tr class="line">
-                                    <td height="0">
-                                        <div class=line></div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
                 <?php  }  ?>
                 <?php if ($v_reptype == "hyrdal") {  ?>
                     <?php
@@ -247,20 +217,9 @@ if (isset($_SESSION['uid'])) {
                             <td class="text-center"> <?php echo $rowno2; ?> </td>
                             <td class="text-center"> <?php echo $row_gjendje_info['emri']; ?> <?php echo $row_gjendje_info['mbiemri']; ?> </td>
                             <td class="text-center"> <?php echo $row_gjendje_info['monedha']; ?> </td>
-                            <td class="text-end" colspan="3"> <?php echo number_format($row_gjendje_info['vleftadebit'], 2, '.', ','); ?> </td>
+                            <td class="text-end" colspan="3"> <?php echo number_format((int)$row_gjendje_info['vleftadebit'], 2, '.', ','); ?> </td>
                             <td class="text-end" colspan="3"> &nbsp;&nbsp; </td>
-                            <td class="text-end" colspan="3"> <?php echo number_format($row_gjendje_info['vleftakredit'], 2, '.', ','); ?> </td>
-                        </tr>
-                        <tr>
-                            <td height="0" colspan="12">
-                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                    <tr class="line">
-                                        <td height="0">
-                                            <div class=line></div>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
+                            <td class="text-end" colspan="3"> <?php echo number_format((int)$row_gjendje_info['vleftakredit'], 2, '.', ','); ?> </td>
                         </tr>
                     <?php $row_gjendje_info = $gjendje_info->fetch_assoc();;
                     }
@@ -268,48 +227,17 @@ if (isset($_SESSION['uid'])) {
                     // ---------------------------------------------------------------------------------
                     ?>
 
-                    <tr>
-                        <td height="0" colspan="12">
-                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                <tr class="line">
-                                    <td height="0">
-                                        <div class=line></div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
 
                 <?php  }  ?>
 
-                <tr>
-                    <td height="0" colspan="12">
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                            <tr class="line">
-                                <td height="0">
-                                    <div class=line></div>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
+              
                 <tr>
                     <td class="text-center" colspan="3"><b>Monedha</b></td>
                     <td class="text-end" colspan="3"><b>Shuma e hyrë</b></td>
                     <td class="text-end" colspan="3"><b>Komisioni</b></td>
                     <td class="text-end" colspan="3"><b>Shuma e dalë</b></td>
                 </tr>
-                <tr>
-                    <td height="0" colspan="12">
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                            <tr class="line">
-                                <td height="0">
-                                    <div class=line></div>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
+                
                 <?php
 
 
@@ -370,21 +298,11 @@ if (isset($_SESSION['uid'])) {
                 ?>
                     <tr>
                         <td class="text-center" colspan="3"> <?php echo $row_RepInfo['mon']; ?> </td>
-                        <td class="text-end" colspan="3"> <?php echo number_format($row_RepInfo['vlerakredit'], 2, '.', ','); ?> </td>
-                        <td class="text-end" colspan="3"> <?php echo number_format($row_RepInfo['komision'], 2, '.', ','); ?> </td>
-                        <td class="text-end" colspan="3"> <?php echo number_format($row_RepInfo['vleradebit'], 2, '.', ','); ?> </td>
+                        <td class="text-end" colspan="3"> <?php echo number_format((int)$row_RepInfo['vlerakredit'], 2, '.', ','); ?> </td>
+                        <td class="text-end" colspan="3"> <?php echo number_format((int)$row_RepInfo['komision'], 2, '.', ','); ?> </td>
+                        <td class="text-end" colspan="3"> <?php echo number_format((int)$row_RepInfo['vleradebit'], 2, '.', ','); ?> </td>
                     </tr>
-                    <tr>
-                        <td height="0" colspan="12">
-                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                <tr class="line">
-                                    <td height="0">
-                                        <div class=line></div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
+                   
                 <?php $row_RepInfo = $RepInfoRS->fetch_assoc();
                 };
                 mysqli_free_result($RepInfoRS);
@@ -394,20 +312,7 @@ if (isset($_SESSION['uid'])) {
                         <b>Totali i transaksioneve: [ <?php echo $rowno; ?> ] [ <?php echo isset($rowno2) ? $rowno2 : 0; ?> ]</b>
                     </td>
                 </tr>
-                <tr>
-                    <td height="0" colspan="12">
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                            <tr class="line">
-                                <td height="0">
-                                    <div class=line></div>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td height="5" colspan="12"></td>
-                </tr>
+                
             </table>
         </div>
     </div>

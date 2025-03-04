@@ -12,13 +12,15 @@ if ((isset($_SESSION['uid'])) && ($_SESSION['Usertype'] != 3)) {
     $v_dt = $_GET['dt'];
   }
 
-?>
-  <?php
+  // Handle delete action
   if (isset($_GET['action']) && ($_GET['action'] == "del")) {
     $sql_info = "DELETE FROM openbalance WHERE id = " . $_GET['hid'];
     $result = mysqli_query($MySQL, $sql_info) or die(mysqli_error($MySQL));
+    // Use JavaScript to redirect instead of PHP header
+    echo "<script>window.location.href = 'exchange_account.php';</script>";
+    exit();
   }
-  ?>
+?>
 
   <script language="JavaScript" src="calendar_eu.js"></script>
   <link rel="stylesheet" href="calendar.css">
@@ -73,10 +75,18 @@ if ((isset($_SESSION['uid'])) && ($_SESSION['Usertype'] != 3)) {
             <td><?php echo $row_gjendje_info['filiali']; ?></td>
             <td><?php echo $row_gjendje_info['monedha']; ?></td>
             <td align="right"><?php echo number_format($row_gjendje_info['vleftakredituar'], 2, '.', ','); ?>&nbsp; &nbsp;</td>
-            <td width="20">
+            <!-- <td width="20">
               <a title="Modifiko Informacionin" href="JavaScript: openOpenBalanceModal('upd', <?php echo $row_gjendje_info['id']; ?>); "><img src="images/edit.gif" border="0"></a>
               <a title="Fshij Informacionin" href="JavaScript: do_deleteOpenBalance(<?php echo $row_gjendje_info['id']; ?>); "><img src="images/del.gif" border="0"></a>
-            </td>
+            </td> -->
+            <td class="d-flex justify-content-between">
+            <div class="cursor-pointer" onclick="openOpenBalanceModal('upd', <?php echo $row_gjendje_info['id']; ?>)">
+              <i class="fa fa-pen-square"></i>
+            </div>
+            <div class="cursor-pointer" onClick="JavaScript: do_deleteOpenBalance(<?php echo $row_gjendje_info['id']; ?>);">
+              <i class="fa fa-trash text-danger"></i>
+            </div>
+          </td>
           </tr>
         <?php $row_gjendje_info = mysqli_fetch_assoc($gjendje_info);
         }
@@ -127,11 +137,11 @@ if ((isset($_SESSION['uid'])) && ($_SESSION['Usertype'] != 3)) {
     });
   }
 
-  function do_deleteOpenBalance(val1, val2) {
+  function do_deleteOpenBalance(val1) {
     var flag = false;
     flag = confirm('Jeni i sigurte per fshirjen e ketij rekordi ?!. ');
     if (flag == true) {
-      window.location = 'exchange_openbal.php?action=del&hid=' + val1 + '&dt=' + val2;
+      window.location = 'exchange_account.php?action=del&hid=' + val1 + '&dt=' + '<?php echo $v_dt; ?>';
     }
   }
 </script>

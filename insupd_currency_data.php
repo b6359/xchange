@@ -96,7 +96,7 @@ if ((isset($_POST["form_action"])) && ($_POST["form_action"] == "upd")) {
 
   //mysql_select_db($database_MySQL, $MySQL);
   $Result1 = mysqli_query($MySQL, $updateSQL) or die(mysqli_error($MySQL));
-  $updateGoTo = "exchange_currency.php";
+  $updateGoTo = "exchange_account.php";
 
   if (isset($_SERVER['QUERY_STRING'])) {
     $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
@@ -120,7 +120,7 @@ if ((isset($_POST["form_action"])) && ($_POST["form_action"] == "ins")) {
   //mysql_select_db($database_MySQL, $MySQL);
   $Result1 = mysqli_query($MySQL, $insertSQL) or die(mysqli_error($MySQL));
 
-  $updateGoTo = "exchange_currency.php";
+  $updateGoTo = "exchange_account.php";
 
   if (isset($_SERVER['QUERY_STRING'])) {
     $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";

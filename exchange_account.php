@@ -1,12 +1,13 @@
+
+
+<?php include 'header.php'; ?>
 <?php
-if (isset($_GET['action']) && ($_GET['action'] == "del")) {
+
+if (isset($_GET['hid']) && ($_GET['action'] == "del")) {
   $sql_info = "DELETE FROM filiali WHERE id = " . $_GET['hid'];
   $result = mysqli_query($MySQL, $sql_info) or die(mysqli_error($MySQL));
 }
 ?>
-
-<?php include 'header.php'; ?>
-
 <div class="page-wrapper">
   <div class="container-fluid">
 
@@ -189,4 +190,25 @@ if (isset($_GET['action']) && ($_GET['action'] == "del")) {
       window.location = 'exchange_account.php?action=del&hid=' + value;
     }
   }
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Get last active tab from localStorage
+    let activeTab = window.localStorage.getItem("activeTab");
+    // If there's an active tab stored, activate it
+    if (activeTab) {
+      let tabElement = document.querySelector(`a[href="${activeTab}"]`);
+      if (tabElement) {
+        new bootstrap.Tab(tabElement).show();
+      }
+    }
+
+    // Store the active tab on click
+    document.querySelectorAll(".nav-link").forEach(tab => {
+      tab.addEventListener("click", function () {
+        let tabId = this.getAttribute("href");
+        window.localStorage.setItem("activeTab", tabId);
+      });
+    });
+  });
 </script>

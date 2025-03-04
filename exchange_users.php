@@ -1,37 +1,5 @@
 <?php include 'header.php'; ?>
-<?php
-//initialize the session
-session_start();
 
-// ** Logout the current user. **
-$logoutAction = $_SERVER['PHP_SELF'] . "?doLogout=true";
-if ((isset($_SERVER['QUERY_STRING'])) && ($_SERVER['QUERY_STRING'] != "")) {
-  $logoutAction .= "&" . htmlentities($_SERVER['QUERY_STRING']);
-}
-
-if ((isset($_GET['doLogout'])) && ($_GET['doLogout'] == "true")) {
-  // logout
-  $GLOBALS['uid']         = "";
-  $GLOBALS['Username']    = "";
-  $GLOBALS['full_name']   = "";
-  $GLOBALS['Usertrans']   = "";
-  $GLOBALS['Userfilial']  = "";
-  $GLOBALS['Usertype']    = "";
-  $_SESSION['uid']        = "";
-  $_SESSION['Username']   = "";
-  $_SESSION['full_name']  = "";
-  $_SESSION['Usertrans']  = "";
-  $_SESSION['Userfilial'] = "";
-  $_SESSION['Usertype']   = "";
-
-  $logoutGoTo = "index.php";
-  if ($logoutGoTo) {
-    header("Location: $logoutGoTo");
-    exit;
-  }
-}
-?>
-<?php require_once('ConMySQL.php'); ?>
 <?php
 
   $user_id = $_SESSION['uid'] ?? addslashes($_SESSION['uid']);

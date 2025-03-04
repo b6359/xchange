@@ -40,7 +40,7 @@ if ($v_view == "excel") {
             <i class="fas fa-print cursor-pointer"></i> Printo
           </button>
         </div>
-        <form class="p-5" enctype="multipart/form-data" ACTION="exchange_balance.php" METHOD="POST" name="formmenu">
+        <form class="p-5" enctype="multipart/form-data" ACTION="exchange_balance.php" METHOD="POST" name="formmenu" id="formmenu">
           <input name="act" type="hidden" value="n/e">
           <input name="view" type="hidden" value="n/e">
 

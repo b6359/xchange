@@ -3,7 +3,7 @@ require_once('ConMySQL.php');
 // Handle currency deletion (commented out for safety)
 if (isset($_GET['action']) && $_GET['action'] === "del") {
   // Modern way to handle deletion with prepared statement
-  /*
+  
         $sql_info = "DELETE FROM monedha WHERE id = ?";
         $stmt = mysqli_prepare($MySQL, $sql_info);
         if ($stmt) {
@@ -12,10 +12,11 @@ if (isset($_GET['action']) && $_GET['action'] === "del") {
                 die('Error executing query: ' . mysqli_error($MySQL));
             }
             mysqli_stmt_close($stmt);
+            echo "<script>window.location.href = 'exchange_account.php';</script>";
         } else {
             die('Error preparing statement: ' . mysqli_error($MySQL));
         }
-        */
+        
 }
 ?>
 

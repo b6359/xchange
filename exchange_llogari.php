@@ -1,9 +1,11 @@
   <?php
+  include 'ConMySQL.php';
   if (isset($_GET['action']) && ($_GET['action'] == "del")) {
     $sql_info = "DELETE FROM llogarite 
       WHERE id = " . $_GET['hid'] . "
       AND (SELECT COUNT(*) FROM exchange_koke WHERE exchange_koke.id_llogfilial = llogarite.id) = 0";
     $result = mysqli_query($MySQL, $sql_info) or die(mysqli_error($MySQL));
+    echo "<script>window.location.href = 'exchange_account.php';</script>";
   }
   ?>
   <!-- //insupd_llogari_data.php?action=ins   Shto Llogari-->

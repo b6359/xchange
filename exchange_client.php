@@ -1,3 +1,4 @@
+<?php require_once('ConMySQL.php'); ?>
 <?php
 
 // Handle client deletion with prepared statement
@@ -16,6 +17,7 @@ if (isset($_GET['action']) && $_GET['action'] === "del") {
       die('Error executing query: ' . mysqli_error($MySQL));
     }
     mysqli_stmt_close($stmt);
+    echo "<script>window.location.href = 'exchange_account.php';</script>";
   } else {
     die('Error preparing statement: ' . mysqli_error($MySQL));
   }
