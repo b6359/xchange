@@ -4,16 +4,27 @@ require_once('ConMySQL.php');
 session_start();
 date_default_timezone_set('Europe/Tirane');
 
-if(!isset($_SESSION['uid']) || empty($_SESSION['uid'])) {
-    session_unset();
-    session_destroy();
-    if(!headers_sent()) {
-        header("Location: index.php");
-        exit;
-    } else {
-        echo '<script>window.location.href="index.php";</script>';
-        exit;
-    }
+// Get toggle value from database
+if (isset($_SESSION['uid'])) {
+    $stmt = mysqli_prepare($MySQL, "SELECT toggle FROM app_user WHERE id = ?");
+    mysqli_stmt_bind_param($stmt, "i", $_SESSION['uid']);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $user = mysqli_fetch_assoc($result);
+    $_SESSION['toggle'] = $user['toggle'];
+    mysqli_stmt_close($stmt);
+}
+
+if (!isset($_SESSION['uid']) || empty($_SESSION['uid'])) {
+  session_unset();
+  session_destroy();
+  if (!headers_sent()) {
+    header("Location: index.php");
+    exit;
+  } else {
+    echo '<script>window.location.href="index.php";</script>';
+    exit;
+  }
 }
 
 // ** Logout the current user. **
@@ -71,7 +82,7 @@ if (isset($_SESSION['uid'])) {
   <script src="./dist/js/custom.min.js"></script>
   <script src="./assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
   <script src="./assets/extra-libs/datatables.net-bs4/js/dataTables.responsive.min.js"></script>
-  <script src="./dist/js/pages/datatable/datatable-basic.init.js"></script>  
+  <script src="./dist/js/pages/datatable/datatable-basic.init.js"></script>
 </head>
 
 <body>
@@ -121,17 +132,17 @@ if (isset($_SESSION['uid'])) {
         <!-- End Logo -->
         <!-- ============================================================== -->
         <div class="navbar-collapse collapse" id="navbarSupportedContent">
-         
+
           <!-- ============================================================== -->
           <!-- Right side toggle and nav items -->
           <!-- ============================================================== -->
           <ul class="navbar-nav d-flex justify-content-end w-100">
-           
+
             <!-- ============================================================== -->
             <!-- User profile and search -->
             <!-- ============================================================== -->
             <li class="nav-item d-none d-md-block">
-              <a class="nav-link" href="exchange_tabel.php">
+              <a class="nav-link" target="_blank" href="exchange_tabel.php">
                 TABELA
               </a>
             </li>
@@ -249,42 +260,64 @@ if (isset($_SESSION['uid'])) {
                 <span class="hide-menu">Raporte </span>
               </a>
               <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                <li class="sidebar-item">
-                  <a href="vle_rep.php" class="sidebar-link">
-                    <i class="fas fa-chart-bar"></i>
-                    <span class="hide-menu"> Raport për vlera</span>
-                  </a>
-                </li>
-                <li class="sidebar-item">
-                  <a href="cli_rep.php" class="sidebar-link">
-                    <i class="fas fa-user"></i>
-                    <span class="hide-menu"> Raport për Klient</span>
-                  </a>
-                </li>
-                <li class="sidebar-item">
-                  <a href="fiu_rep.php" class="sidebar-link">
-                    <i class="fas fa-file-alt"></i>
-                    <span class="hide-menu"> Raport për DPPPP</span>
-                  </a>
-                </li>
-                <li class="sidebar-item">
-                  <a href="boa_rep.php" class="sidebar-link">
-                  <i class="fa fa-piggy-bank"></i>
-                    <span class="hide-menu"> Banka e Shqipërisë</span>
-                  </a>
-                </li>
-                <li class="sidebar-item">
-                  <a href="dt_rep.php" class="sidebar-link">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span class="hide-menu"> Veprimet ditore/periodike</span>
-                  </a>
-                </li>
-                <li class="sidebar-item">
-                  <a href="st_rep.php" class="sidebar-link">
-                    <i class="fa fa-list"></i>
-                    <span class="hide-menu"> Përmbledhje e veprimeve</span>
-                  </a>
-                </li>
+
+                <?php if ($_SESSION['toggle'] == 'ON') { ?>
+                  <li class="sidebar-item">
+                    <a href="fiu_rep.php" class="sidebar-link">
+                      <i class="fas fa-file-alt"></i>
+                      <span class="hide-menu"> Raport për DPPPP</span>
+                    </a>
+                  </li>
+                  <li class="sidebar-item">
+                    <a href="boa_rep.php" class="sidebar-link">
+                      <i class="fa fa-piggy-bank"></i>
+                      <span class="hide-menu"> Banka e Shqipërisë</span>
+                    </a>
+                  </li>
+                  <li class="sidebar-item">
+                    <a href="dt_rep.php" class="sidebar-link">
+                      <i class="fas fa-calendar-alt"></i>
+                      <span class="hide-menu"> Veprimet ditore/periodike</span>
+                    </a>
+                  </li>
+                <?php } else { ?>
+                  <li class="sidebar-item">
+                    <a href="vle_rep.php" class="sidebar-link">
+                      <i class="fas fa-chart-bar"></i>
+                      <span class="hide-menu"> Raport për vlera</span>
+                    </a>
+                  </li>
+                  <li class="sidebar-item">
+                    <a href="cli_rep.php" class="sidebar-link">
+                      <i class="fas fa-user"></i>
+                      <span class="hide-menu"> Raport për Klient</span>
+                    </a>
+                  </li>
+                  <li class="sidebar-item">
+                    <a href="fiu_rep.php" class="sidebar-link">
+                      <i class="fas fa-file-alt"></i>
+                      <span class="hide-menu"> Raport për DPPPP</span>
+                    </a>
+                  </li>
+                  <li class="sidebar-item">
+                    <a href="boa_rep.php" class="sidebar-link">
+                      <i class="fa fa-piggy-bank"></i>
+                      <span class="hide-menu"> Banka e Shqipërisë</span>
+                    </a>
+                  </li>
+                  <li class="sidebar-item">
+                    <a href="dt_rep.php" class="sidebar-link">
+                      <i class="fas fa-calendar-alt"></i>
+                      <span class="hide-menu"> Veprimet ditore/periodike</span>
+                    </a>
+                  </li>
+                  <li class="sidebar-item">
+                    <a href="st_rep.php" class="sidebar-link">
+                      <i class="fa fa-list"></i>
+                      <span class="hide-menu"> Përmbledhje e veprimeve</span>
+                    </a>
+                  </li>
+                <?php } ?>
               </ul>
             </li>
             <li class="list-divider"></li>
@@ -304,7 +337,7 @@ if (isset($_SESSION['uid'])) {
                 href="exchange_users.php"
                 aria-expanded="false"><i class="fas fa-users"></i><span class="hide-menu">Përdoruesit</span></a>
             </li>
-            
+
             <li class="sidebar-item">
               <a
                 class="sidebar-link sidebar-link"

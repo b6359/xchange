@@ -42,16 +42,6 @@ if (isset($_SESSION['uid'])) {
 ?>
 
 
-  <!-- --------------------------------------- -->
-  <!--          Aplikacioni xChange            -->
-  <!--                                         -->
-  <!--  Kontakt:                               -->
-  <!--                                         -->
-  <!--           GlobalTech.al                 -->
-  <!--                                         -->
-  <!--        info@globaltech.al               -->
-  <!-- --------------------------------------- -->
-
 
   <html>
 
@@ -75,19 +65,11 @@ if (isset($_SESSION['uid'])) {
       <TBODY>
         <TR>
           <TD align="center">
-            <img src="images/logo_print.png" title="GlobalTech.al" alt="GlobalTech.al" border="0" width="100">
+            <img src="./assets/images/Logo.png" title="GlobalTech.al" alt="GlobalTech.al" border="0" width="100">
           </TD>
         </TR>
       </TBODY>
     </TABLE>
-    <!--
-<img src="images/logo_print.png" title="GlobalTech.al" alt="GlobalTech.al" height="100px" style="
-    text-align: center;
-    margin-left: 80px;
-	 margin-bottom: 9px;
-	 margin-top:10px;
-">
--->
     <TABLE cellSpacing=0 cellPadding=0 width="300" border=0>
       <TBODY style="font-weight: bolder;">
         <TR>
@@ -95,9 +77,6 @@ if (isset($_SESSION['uid'])) {
             <DIV class=ctxheadingP>
               <b>
                 <font size="2">
-                  <!--
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><?php echo $_SESSION['CNAME']; ?><br>
--->
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $_SESSION['CNIPT']; ?><br>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $_SESSION['CADDR']; ?></strong>
                 </font>

@@ -80,17 +80,15 @@ if (isset($_SESSION['uid'])) {
 
   <body leftmargin=0 topmargin=0 marginheight="0" marginwidth="5" bgcolor=#FFFFFF vlink="#0000ff" link="#0000ff" onLoad="JavaScript: window.print();">
 
-    <!--
 <TABLE cellSpacing=0 cellPadding=0 width="250" border=0>
   <TBODY>
     <TR>
       <TD align="center">
-        <img src="images/header.png" border="0" width="250">
+      <img src="./assets/images/Logo.png" title="GlobalTech.al" alt="GlobalTech.al" border="0" width="100">
       </TD>
     </TR>
   </TBODY>
 </TABLE>
--->
     <TABLE cellSpacing=0 cellPadding=0 width="250" border=0>
       <TBODY>
         <TR>

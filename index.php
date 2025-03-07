@@ -31,7 +31,7 @@ if (!empty($_POST['email']) && !empty($_POST['password'])) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $stmt = $conn->prepare("SELECT id, username, full_name, id_trans, id_filiali, id_usertype FROM app_user WHERE e_mail=? AND password=?");
+    $stmt = $conn->prepare("SELECT id, username, full_name, id_trans, id_filiali, id_usertype, toggle FROM app_user WHERE e_mail=? AND password=?");
     $stmt->bind_param("ss", $loginEmail, $password);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -44,6 +44,7 @@ if (!empty($_POST['email']) && !empty($_POST['password'])) {
         $_SESSION['Usertrans'] = $myrow["id_trans"];
         $_SESSION['Userfilial'] = $myrow["id_filiali"];
         $_SESSION['Usertype'] = $myrow["id_usertype"];
+        $_SESSION['toggle'] = $myrow["toggle"];
 
         header("Location: " . $MM_redirectLoginSuccess);
         exit();

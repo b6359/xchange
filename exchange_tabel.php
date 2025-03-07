@@ -1,4 +1,8 @@
-<?php include 'header.php'; ?>
+<link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon.ico">
+<script src="./assets/libs/jquery/dist/jquery.min.js"></script>
+<link href="./dist/css/style.css" rel="stylesheet">
+<script src="./assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<title>Tabela</title>
 <script>
   $(document).ready(function() {
     setInterval(function() {
@@ -6,11 +10,10 @@
     }, 1000);
   });
 </script>
-<div class="page-wrapper">
-  <div class="container-fluid">
-  <div class="card p-3">
-    <div id="autodata"></div>
-    </div>
-  </div>
+<div class="container-fluid text-center">
+<img
+    src="./assets/images/Logo.png"
+    alt=""
+    class="img-fluid" />
 </div>
-<?php include 'footer.php'; ?>
+<div id="autodata"></div>

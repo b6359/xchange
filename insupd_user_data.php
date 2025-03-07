@@ -12,6 +12,7 @@ $id_usertype = "2";
 $phone       = "";
 $e_mail      = "";
 $status      = "T";
+$toggle      = "ON";
 
 if (isset($_GET['action']) && ($_GET['action'] == "upd")) {
   if (isset($_GET['hid'])) {
@@ -33,6 +34,7 @@ if (isset($_GET['action']) && ($_GET['action'] == "upd")) {
     $phone       = $row_menu_info['phone'];
     $e_mail      = $row_menu_info['e_mail'];
     $status      = $row_menu_info['status'];
+    $toggle      = $row_menu_info['toggle'];
 
     mysqli_free_result($menu_info);
   }
@@ -88,7 +90,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 if ((isset($_POST["form_action"])) && ($_POST["form_action"] == "upd")) {
   $updateSQL = sprintf(
-    "UPDATE app_user SET password=%s, full_name=%s, id_trans=%s, id_filiali=%s, id_usertype=%s, phone=%s, e_mail=%s, status=%s WHERE id=%s",
+    "UPDATE app_user SET password=%s, full_name=%s, id_trans=%s, id_filiali=%s, id_usertype=%s, phone=%s, e_mail=%s, status=%s, toggle=%s WHERE id=%s",
     GetSQLValueString($_POST['password'], "text"),
     GetSQLValueString($_POST['full_name'], "text"),
     GetSQLValueString($_POST['id_trans'], "int"),
@@ -97,6 +99,7 @@ if ((isset($_POST["form_action"])) && ($_POST["form_action"] == "upd")) {
     GetSQLValueString($_POST['phone'], "text"),
     GetSQLValueString($_POST['e_mail'], "text"),
     GetSQLValueString($_POST['status'], "text"),
+    GetSQLValueString($_POST['toggle'], "text"),
     GetSQLValueString($_POST['id'], "int")
   );
 
@@ -109,7 +112,7 @@ if ((isset($_POST["form_action"])) && ($_POST["form_action"] == "upd")) {
 
 if ((isset($_POST["form_action"])) && ($_POST["form_action"] == "ins")) {
   $insertSQL = sprintf(
-    "INSERT INTO app_user (username, password, full_name, id_trans, id_filiali, id_usertype, phone, e_mail, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+    "INSERT INTO app_user (username, password, full_name, id_trans, id_filiali, id_usertype, phone, e_mail, status, toggle) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
     GetSQLValueString($_POST['username'], "text"),
     GetSQLValueString($_POST['password'], "text"),
     GetSQLValueString($_POST['full_name'], "text"),
@@ -118,7 +121,8 @@ if ((isset($_POST["form_action"])) && ($_POST["form_action"] == "ins")) {
     GetSQLValueString($_POST['id_usertype'], "int"),
     GetSQLValueString($_POST['phone'], "text"),
     GetSQLValueString($_POST['e_mail'], "text"),
-    GetSQLValueString($_POST['status'], "text")
+    GetSQLValueString($_POST['status'], "text"),
+    GetSQLValueString($_POST['toggle'], "text")
   );
 
   mysqli_select_db($MySQL, $database_MySQL);
@@ -238,6 +242,19 @@ if ((isset($_POST["form_action"])) && ($_POST["form_action"] == "ins")) {
             <option value="F" <?php if (!(strcmp("F", $status))) {
                                 echo "SELECTED";
                               } ?>>Cancel</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group mb-3">
+          <lable class="form-label">Toggle:</lable>
+          <select name="toggle" id="toggle" class="form-select mr-sm-2">
+            <option value="ON" <?php if (!(strcmp("ON", $toggle))) {
+                                echo "SELECTED";
+                              } ?>>ON</option>
+            <option value="OFF" <?php if (!(strcmp("OFF", $toggle))) {
+                                echo "SELECTED";
+                              } ?>>OFF</option>
           </select>
         </div>
       </div>

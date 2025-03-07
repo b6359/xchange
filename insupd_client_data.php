@@ -172,8 +172,10 @@ if ((isset($_POST["form_action"])) && ($_POST["form_action"] == "ins")) {
 
   //mysql_select_db($database_MySQL, $MySQL);
   $Result1 = mysqli_query($MySQL, $insertSQL) or die(mysqli_error($MySQL));
-
   $updateGoTo = "exchange_account.php";
+  if (isset($_POST['exchange']) && $_POST['exchange'] == 1) {
+    $updateGoTo = "exchange.php";
+  }
 
   if (isset($_SERVER['QUERY_STRING'])) {
     $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
@@ -211,6 +213,7 @@ if ((isset($_POST["form_action"])) && ($_POST["form_action"] == "ins")) {
     <div class="card-body">
       <form enctype="multipart/form-data" ACTION="insupd_client_data.php" METHOD="POST" name="formmenu" onsubmit="return checkform(this);">
         <input name="form_action" type="hidden" value="<?php echo $_GET['action']; ?>">
+        <input name="exchange" type="hidden" value="<?php echo isset($_GET['exchange']) ? $_GET['exchange'] : ''; ?>">
         <input name="id" type="hidden" value="<?php echo $id; ?>">
 
         <div class="row mb-3">

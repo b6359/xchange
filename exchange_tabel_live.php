@@ -1,27 +1,31 @@
-<?php
-include 'header.php';
-?>
-<div class="page-wrapper">
-<div class="container-fluid" id="data-container">
+<link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon.ico">
+<script src="./assets/libs/jquery/dist/jquery.min.js"></script>
+<link href="./dist/css/style.css" rel="stylesheet">
+<script src="./assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<title>Tabela Live</title>
+<div class="container-fluid text-center">
+<img
+    src="./assets/images/Logo.png"
+    alt=""
+    class="img-fluid" />
+</div>
+<div id="data-container">
 
 </div>
 <script>
-function fetchData() {
-    $.ajax({
-        url: 'exchange_tabel_live_fetch.php', // Create this file to return the updated data
-        method: 'GET',
-        success: function(data) {
-            // Update the relevant part of the page with the new data
-            $('#data-container').html(data);
-        },
-        error: function() {
-            console.error('Failed to fetch data');
-        }
-    });
-}
+    function fetchData() {
+        $.ajax({
+            url: 'exchange_tabel_live_fetch.php', // Create this file to return the updated data
+            method: 'GET',
+            success: function(data) {
+                // Update the relevant part of the page with the new data
+                $('#data-container').html(data);
+            },
+            error: function() {
+                console.error('Failed to fetch data');
+            }
+        });
+    }
 
-setInterval(fetchData, 1000);
+    setInterval(fetchData, 1000);
 </script>
-<?php
-include 'footer.php';
-?>
