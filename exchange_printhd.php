@@ -84,7 +84,7 @@ if (isset($_SESSION['uid'])) {
   <TBODY>
     <TR>
       <TD align="center">
-      <img src="./assets/images/Logo.png" title="GlobalTech.al" alt="GlobalTech.al" border="0" width="100">
+      <img src="<?php if (isset($_SESSION['logo_image']) && !empty($_SESSION['logo_image'])) { echo $_SESSION['logo_image']; } else { echo './assets/images/Logo.png'; } ?>" title="GlobalTech.al" alt="GlobalTech.al" border="0" width="100">
       </TD>
     </TR>
   </TBODY>

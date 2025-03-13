@@ -1,7 +1,15 @@
 <?php
 ob_start(); // Start output buffering
 include 'header.php';
-
+if (isset($_SESSION['uid'])) {
+    $stmt = mysqli_prepare($MySQL, "SELECT toggle FROM app_user WHERE id = ?");
+    mysqli_stmt_bind_param($stmt, "i", $_SESSION['uid']);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $user = mysqli_fetch_assoc($result);
+    $_SESSION['toggle'] = $user['toggle'];
+    mysqli_stmt_close($stmt);
+}
 //$clid = $_GET['clid'];
 $clid = isset($_GET['clid']) ? $_GET['clid'] : null;
 
@@ -195,9 +203,14 @@ if ((isset($_POST["form_action"])) && ($_POST["form_action"] == "ins")) {
     $row_id_info = $id_info->fetch_assoc();
     $id_info_value = $row_id_info['nr'];
 
-    $updateGoTo = "exchange_print.php?hid=" . $id_info_value;
+    if ($_POST['download_type'] === 'json') {
+        $updateGoTo = "exchange_print.php?hid=" . $id_info_value . "&download_type=json";
+    } else {
+        // $updateGoTo = "exchange_print.php?hid=" . $id_info_value . "&download_type=regular";
+        $updateGoTo = "exchange.php";
+    }
     header(sprintf("Location: %s", $updateGoTo));
-    exit(); // Always exit after a header redirect
+    exit();
 }
 
 // $sql_id_info = "select opstatus from opencloseday ";
@@ -301,6 +314,7 @@ $row_monkurs_info = $monkurs_info->fetch_assoc();
                             <input name="form_action" type="hidden" value="ins">
                             <input name="rate_value" type="hidden" value="">
                             <input name="total_value" type="hidden" value="">
+                            <input name="download_type" type="hidden" value="regular">
                             <div class="form-body">
                                 <div class="row">
                                     <div class="col-md-5">
@@ -506,8 +520,16 @@ $row_monkurs_info = $monkurs_info->fetch_assoc();
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group mb-3 ">
-                                            <input class="btn btn-info d-block ms-auto" name="insupd" class="inputtext4" type="button" value=" Kryej veprimin " onClick="JavaScript: if (document.formmenu.vleftapaguar.value != 0) { document.formmenu.submit(); }">
+                                        <?php if ($_SESSION['toggle'] == 'ON') { ?>
+                                            <div class="form-group mb-3">
+                                                <input class="btn btn-info d-block ms-auto" name="insupd" class="inputtext4" type="button" value="Kryej veprimin" onClick="JavaScript: if (document.formmenu.vleftapaguar.value != 0) { document.formmenu.submit(); }">
+                                            </div>
+                                            <?php } else { ?>
+                                            <div class="form-group mb-3 d-flex justify-content-between">
+                                                <input class="btn btn-info d-block ms-auto" name="insupd" class="inputtext4" type="button" value="Kryej veprimin" onClick="JavaScript: if (document.formmenu.vleftapaguar.value != 0) { document.formmenu.download_type.value='regular'; document.formmenu.submit(); }">
+                                                <input class="btn btn-info d-block ms-auto" name="insupd" class="inputtext4" type="button" value="Shkarkoni faturën json" onClick="JavaScript: if (document.formmenu.vleftapaguar.value != 0) { document.formmenu.download_type.value='json'; document.formmenu.submit(); }">
+                                            </div>
+                                            <?php } ?>
                                         </div>
                                     </div>
                                 </div>

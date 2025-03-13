@@ -2,23 +2,26 @@
 
 include 'header.php';
 
-  $user_info = $_SESSION['Username'] ?? addslashes($_SESSION['Username']);
-  $v_act = "";
-  if ((isset($_POST['act'])) && ($_POST['act'] != "")) {
-    $v_act = $_POST['act'];
-  }
-  $v_reptype = "Excel";
-  if ((isset($_POST['reptype'])) && ($_POST['reptype'] != "")) {
-    $v_reptype = $_POST['reptype'];
-  }
-  $v_dt1 = "";
-  if ((isset($_POST['p_date1'])) && ($_POST['p_date1'] != "")) {
-    $v_dt1 = $_POST['p_date1'];
-  }
-  $v_dt2 = "";
-  if ((isset($_POST['p_date2'])) && ($_POST['p_date2'] != "")) {
-    $v_dt2 = $_POST['p_date2'];
-  }
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+$user_info = $_SESSION['Username'] ?? addslashes($_SESSION['Username']);
+$v_act = "";
+if ((isset($_POST['act'])) && ($_POST['act'] != "")) {
+  $v_act = $_POST['act'];
+}
+$v_reptype = "Excel";
+if ((isset($_POST['reptype'])) && ($_POST['reptype'] != "")) {
+  $v_reptype = $_POST['reptype'];
+}
+$v_dt1 = "";
+if ((isset($_POST['p_date1'])) && ($_POST['p_date1'] != "")) {
+  $v_dt1 = $_POST['p_date1'];
+}
+$v_dt2 = "";
+if ((isset($_POST['p_date2'])) && ($_POST['p_date2'] != "")) {
+  $v_dt2 = $_POST['p_date2'];
+}
 
 ?>
     <script language="JavaScript" src="calendar_eu.js"></script>

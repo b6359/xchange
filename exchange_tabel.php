@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon.ico">
 <script src="./assets/libs/jquery/dist/jquery.min.js"></script>
 <link href="./dist/css/style.css" rel="stylesheet">
@@ -12,7 +15,7 @@
 </script>
 <div class="container-fluid text-center">
 <img
-    src="./assets/images/Logo.png"
+   src="<?php if (isset($_SESSION['logo_image']) && !empty($_SESSION['logo_image'])) { echo $_SESSION['logo_image']; } else { echo './assets/images/Logo.png'; } ?>"
     alt=""
     class="img-fluid" />
 </div>

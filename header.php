@@ -108,8 +108,8 @@ if (isset($_SESSION['uid'])) {
             <!-- Logo icon -->
             <a href="dashboard.php">
               <img
-                src="./assets/images/Logo.png"
-                alt=""
+                src="<?php if (isset($_SESSION['logo_image']) && !empty($_SESSION['logo_image'])) { echo $_SESSION['logo_image']; } else { echo './assets/images/Logo.png'; } ?>"
+                alt="logo"
                 class="img-fluid" />
             </a>
           </div>
@@ -336,14 +336,6 @@ if (isset($_SESSION['uid'])) {
                 class="sidebar-link sidebar-link"
                 href="exchange_users.php"
                 aria-expanded="false"><i class="fas fa-users"></i><span class="hide-menu">Përdoruesit</span></a>
-            </li>
-
-            <li class="sidebar-item">
-              <a
-                class="sidebar-link sidebar-link"
-                href="exchange_tabel_live.php"
-                target="_blank"
-                aria-expanded="false"><i class="fas fa-table"></i><span class="hide-menu">TABELA LIVE</span></a>
             </li>
             <li class="sidebar-item">
               <a

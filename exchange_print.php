@@ -65,7 +65,7 @@ if (isset($_SESSION['uid'])) {
       <TBODY>
         <TR>
           <TD align="center">
-            <img src="./assets/images/Logo.png" title="GlobalTech.al" alt="GlobalTech.al" border="0" width="100">
+            <img src="<?php if (isset($_SESSION['logo_image']) && !empty($_SESSION['logo_image'])) { echo $_SESSION['logo_image']; } else { echo './assets/images/Logo.png'; } ?>" title="GlobalTech.al" alt="GlobalTech.al" border="0" width="100">
           </TD>
         </TR>
       </TBODY>
@@ -91,10 +91,9 @@ if (isset($_SESSION['uid'])) {
     <TABLE cellSpacing=0 cellPadding=0 width="300" border=0>
       <TBODY style="font-weight: bolder;">
         <td height="15" colspan="3" align="left" valign="middle" style="
-    font-size: 20px;
-    text-align: center;
-    text-transform: capitalize;
-">Mandat k&euml;mbimi valutor</td>
+            font-size: 20px;
+            text-align: center;
+            text-transform: capitalize;">Mandat k&euml;mbimi valutor</td>
         <TR style="font-weight: bolder;">
           <TD align="center" colSpan=3>
             <DIV class=ctxheadingP>

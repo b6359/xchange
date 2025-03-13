@@ -13,6 +13,7 @@ $phone       = "";
 $e_mail      = "";
 $status      = "T";
 $toggle      = "ON";
+$logo_image  = "";
 
 if (isset($_GET['action']) && ($_GET['action'] == "upd")) {
   if (isset($_GET['hid'])) {
@@ -35,6 +36,7 @@ if (isset($_GET['action']) && ($_GET['action'] == "upd")) {
     $e_mail      = $row_menu_info['e_mail'];
     $status      = $row_menu_info['status'];
     $toggle      = $row_menu_info['toggle'];
+    $logo_image  = $row_menu_info['logo_image'];
 
     mysqli_free_result($menu_info);
   }
@@ -88,9 +90,22 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
   }
   return $theValue;
 }
+function convertImageToBase64($file) {
+    if (!isset($file['tmp_name']) || empty($file['tmp_name'])) {
+        return null;
+    }
+    
+    $imageData = file_get_contents($file['tmp_name']);
+    $mimeType = mime_content_type($file['tmp_name']);
+    $base64 = 'data:' . $mimeType . ';base64,' . base64_encode($imageData);
+    return $base64;
+}
 if ((isset($_POST["form_action"])) && ($_POST["form_action"] == "upd")) {
+  $logo_base64 = isset($_FILES['logo_image']) ? convertImageToBase64($_FILES['logo_image']) : null;
+  $logoSQL = $logo_base64 ? ", logo_image=" . GetSQLValueString($logo_base64, "text") : "";
+  
   $updateSQL = sprintf(
-    "UPDATE app_user SET password=%s, full_name=%s, id_trans=%s, id_filiali=%s, id_usertype=%s, phone=%s, e_mail=%s, status=%s, toggle=%s WHERE id=%s",
+    "UPDATE app_user SET password=%s, full_name=%s, id_trans=%s, id_filiali=%s, id_usertype=%s, phone=%s, e_mail=%s, status=%s, toggle=%s%s WHERE id=%s",
     GetSQLValueString($_POST['password'], "text"),
     GetSQLValueString($_POST['full_name'], "text"),
     GetSQLValueString($_POST['id_trans'], "int"),
@@ -100,19 +115,24 @@ if ((isset($_POST["form_action"])) && ($_POST["form_action"] == "upd")) {
     GetSQLValueString($_POST['e_mail'], "text"),
     GetSQLValueString($_POST['status'], "text"),
     GetSQLValueString($_POST['toggle'], "text"),
+    $logoSQL,
     GetSQLValueString($_POST['id'], "int")
   );
 
   mysqli_select_db($MySQL, $database_MySQL);
   $Result1 = mysqli_query($MySQL, $updateSQL) or die(mysqli_error($MySQL));
-
+  if($_SESSION['uid']==$_POST['id']){
+    $_SESSION['logo_image'] = $logo_base64;
+  }
   $updateGoTo = "exchange_users.php";
   header(sprintf("Location: %s", $updateGoTo));
 }
 
 if ((isset($_POST["form_action"])) && ($_POST["form_action"] == "ins")) {
+  $logo_base64 = isset($_FILES['logo_image']) ? convertImageToBase64($_FILES['logo_image']) : null;
+  
   $insertSQL = sprintf(
-    "INSERT INTO app_user (username, password, full_name, id_trans, id_filiali, id_usertype, phone, e_mail, status, toggle) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+    "INSERT INTO app_user (username, password, full_name, id_trans, id_filiali, id_usertype, phone, e_mail, status, toggle, logo_image) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
     GetSQLValueString($_POST['username'], "text"),
     GetSQLValueString($_POST['password'], "text"),
     GetSQLValueString($_POST['full_name'], "text"),
@@ -122,12 +142,13 @@ if ((isset($_POST["form_action"])) && ($_POST["form_action"] == "ins")) {
     GetSQLValueString($_POST['phone'], "text"),
     GetSQLValueString($_POST['e_mail'], "text"),
     GetSQLValueString($_POST['status'], "text"),
-    GetSQLValueString($_POST['toggle'], "text")
+    GetSQLValueString($_POST['toggle'], "text"),
+    GetSQLValueString($logo_base64, "text")
   );
 
   mysqli_select_db($MySQL, $database_MySQL);
   $Result1 = mysqli_query($MySQL, $insertSQL) or die(mysqli_error($MySQL));
-
+  
   $updateGoTo = "exchange_users.php";
   header(sprintf("Location: %s", $updateGoTo));
 }
@@ -256,6 +277,15 @@ if ((isset($_POST["form_action"])) && ($_POST["form_action"] == "ins")) {
                                 echo "SELECTED";
                               } ?>>OFF</option>
           </select>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group mb-3">
+          <lable class="form-label">Logo Image:</lable>
+          <input class="form-control" name="logo_image" type="file" id="logo_image" accept="image/*">
+          <?php if (!empty($logo_image)) : ?>
+            <img src="<?php echo $logo_image; ?>" alt="Current Logo" style="max-width: 200px; margin-top: 10px;">
+          <?php endif; ?>
         </div>
       </div>
     </div>
