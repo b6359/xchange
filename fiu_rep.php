@@ -2,8 +2,8 @@
 
 include 'header.php';
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 
 $user_info = $_SESSION['Username'] ?? addslashes($_SESSION['Username']);
 $v_act = "";
@@ -341,7 +341,7 @@ mysqli_free_result($RepInfoRS);
     $v_file = "rep/BalancaPerMonedhe_" . strftime('%Y%m%d%H%M%S') . ".xls";
     $workbook = new Spreadsheet_Excel_Writer($v_file);
 
-    $format1    = &$workbook->addFormat(array(
+    $format1 = $workbook->addFormat(array(
         'Size'       => 10,
         'Align'      => 'center',
         'VAlign'     => 'vcenter',
@@ -354,7 +354,7 @@ mysqli_free_result($RepInfoRS);
     ));
     $format1->setTextWrap();
 
-    $format2    = &$workbook->addFormat(array(
+    $format2 = $workbook->addFormat(array(
         'Size'       => 10,
         'Align'      => 'left',
         'VAlign'     => 'vcenter',
@@ -367,7 +367,7 @@ mysqli_free_result($RepInfoRS);
     ));
     $format2->setTextWrap();
 
-    $format3    = &$workbook->addFormat(array(
+    $format3 = $workbook->addFormat(array(
         'Size'       => 10,
         'Align'      => 'right',
         'VAlign'     => 'vcenter',
@@ -380,7 +380,7 @@ mysqli_free_result($RepInfoRS);
     ));
     $format3->setTextWrap();
 
-    $format4    = &$workbook->addFormat(array(
+    $format4 = $workbook->addFormat(array(
         'Size'       => 10,
         'Align'      => 'left',
         'VAlign'     => 'vcenter',
@@ -393,7 +393,7 @@ mysqli_free_result($RepInfoRS);
     ));
     $format4->setTextWrap();
 
-    $format5    = &$workbook->addFormat(array(
+    $format5 = $workbook->addFormat(array(
         'Size'       => 10,
         'Align'      => 'right',
         'VAlign'     => 'vcenter',
@@ -406,7 +406,7 @@ mysqli_free_result($RepInfoRS);
     $format5->setTextWrap();
 
 
-    $format6    = &$workbook->addFormat(array(
+    $format6 = $workbook->addFormat(array(
         'Size'       => 10,
         'Align'      => 'left',
         'VAlign'     => 'vcenter',
@@ -419,7 +419,7 @@ mysqli_free_result($RepInfoRS);
     ));
     $format6->setTextWrap();
 
-    $format7    = &$workbook->addFormat(array(
+    $format7 = $workbook->addFormat(array(
         'Size'       => 10,
         'Align'      => 'right',
         'VAlign'     => 'vcenter',
@@ -432,7 +432,7 @@ mysqli_free_result($RepInfoRS);
     ));
     $format7->setTextWrap();
 
-    $format8    = &$workbook->addFormat(array(
+    $format8 = $workbook->addFormat(array(
         'Size'       => 11,
         'Align'      => 'left',
         'VAlign'     => 'vcenter',
@@ -445,7 +445,7 @@ mysqli_free_result($RepInfoRS);
     ));
     $format8->setTextWrap();
 
-    $format9    = &$workbook->addFormat(array(
+    $format9 = $workbook->addFormat(array(
         'Size'       => 10,
         'Align'      => 'right',
         'VAlign'     => 'vcenter',
@@ -457,7 +457,7 @@ mysqli_free_result($RepInfoRS);
     ));
     $format9->setTextWrap();
 
-    $format10   = &$workbook->addFormat(array(
+    $format10 = $workbook->addFormat(array(
         'Size'       => 10,
         'Align'      => 'right',
         'VAlign'     => 'vcenter',
@@ -473,7 +473,7 @@ mysqli_free_result($RepInfoRS);
     //----------------------------------------------------------------------------------------------------
     set_time_limit(0);
 
-    $worksheet1 = &$workbook->addWorksheet('Raport DPPPP');
+    $worksheet1 = $workbook->addWorksheet('Raport DPPPP');
 
     $worksheet1->write(0,  0,  "", $format8);
     $worksheet1->write(0,  1,  "", $format8);

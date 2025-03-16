@@ -417,7 +417,7 @@ $row_monkurs_info = $monkurs_info->fetch_assoc();
                                     <div class="col-md-5">
                                         <div class="form-group mb-3">
                                             <lable class="form-label">Shuma:&nbsp;</lable>
-                                            <input class="form-control text-end" name="vleftadebituar" type="text" class="inputtext2" id="vleftadebituar" value=".00" size="15" onChange="JavaScript: if (document.formmenu.id_monkreditim.value != '999')  calculate_rate_value (); " onKeyDown="if (event.keyCode == 13) document.formmenu.insupd.focus(); ">
+                                            <input class="form-control text-end" name="vleftadebituar" type="number" min="0" class="inputtext2" id="vleftadebituar" value=".00" size="15" onChange="JavaScript: if (document.formmenu.id_monkreditim.value != '999')  calculate_rate_value (); " onKeyDown="if (event.keyCode == 13) document.formmenu.insupd.focus(); ">
                                         </div>
                                     </div>
                                 </div>
@@ -690,12 +690,16 @@ $row_monkurs_info = $monkurs_info->fetch_assoc();
         };
 
         function calculate_rate_value() {
-
+            if(new Number(document.formmenu.vleftadebituar.value) <= 0) {
+                alert('Shuma duhet të jetë më e madhe se 0');
+                return;
+            }
             if ((document.formmenu.id_mondebituar.value != '999') && (document.formmenu.id_monkreditim.value != '999')) {
 
                 rate_value = news[document.formmenu.id_mondebituar.value][2] / news[document.formmenu.id_monkreditim.value][
                     3
                 ];
+               
 
                 document.formmenu.hkursi.value = news[document.formmenu.id_mondebituar.value][2] / news[document.formmenu
                     .id_monkreditim.value][3];

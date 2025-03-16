@@ -17,20 +17,32 @@
 // | Based on OLE::Storage_Lite by Kawai, Takanori                        |
 // +----------------------------------------------------------------------+
 //
-// $Id: OLE.php,v 1.15 2007/12/18 20:59:11 schmidt Exp $
+// $Id$
 
 
 /**
 * Constants for OLE package
 */
-define('OLE_PPS_TYPE_ROOT',        5);
-define('OLE_PPS_TYPE_DIR',         1);
-define('OLE_PPS_TYPE_FILE',        2);
-define('OLE_DATA_SIZE_SMALL', 0x1000);
-define('OLE_LONG_INT_SIZE',        4);
-define('OLE_PPS_SIZE',          0x80);
+define('OLE_PPS_TYPE_ROOT',        0x05);
+define('OLE_PPS_TYPE_DIR',         0x01);
+define('OLE_PPS_TYPE_FILE',        0x02);
+define('OLE_DATA_SIZE_SMALL',    0x1000);
+define('OLE_LONG_INT_SIZE',           4);
+define('OLE_PPS_SIZE',             0x80);
+define('OLE_DIFSECT',        0xFFFFFFFC);
+define('OLE_FATSECT',        0xFFFFFFFD);
+define('OLE_ENDOFCHAIN',     0xFFFFFFFE);
+define('OLE_FREESECT',       0xFFFFFFFF);
+define('OLE_LITTLE_ENDIAN',      0xFFFE);
+define('OLE_VERSION_MAJOR_3',    0x0003);
+define('OLE_VERSION_MINOR',      0x003E);
+define('OLE_SECTOR_SHIFT_3',     0x0009);
+define('OLE_MINI_SECTOR_SHIFT',  0x0006);
+define('OLE_CFB_SIGNATURE', "\xD0\xCF\x11\xE0\xA1\xB1\x1A\xE1");
 
-require_once 'PEAR.php';
+if (!class_exists('PEAR')) {
+    require_once 'PEAR.php';
+}
 
 /**
 * Array for storing OLE instances that are accessed from
@@ -55,6 +67,12 @@ class OLE extends PEAR
     * @var resource
     */
     var $_file_handle;
+
+    /**
+     * Reference to the sbat stream
+     * @var resource
+     */
+    var $_small_handle;
 
     /**
     * Array of PPS's found on the OLE container
@@ -87,6 +105,12 @@ class OLE extends PEAR
     var $bigBlockSize;
 
     /**
+    * The big block threshhold.
+    * @var int
+    */
+    var $bigBlockThreshold;
+
+    /**
     * Size of small blocks. This is usually 64.
     * @var  int  number of octets per block
     */
@@ -96,7 +120,7 @@ class OLE extends PEAR
     * Creates a new OLE object
     * @access public
     */
-    function OLE()
+    function __construct()
     {
         $this->_list = array();
     }
@@ -125,14 +149,27 @@ class OLE extends PEAR
         if (!$fh) {
             return $this->raiseError("Can't open file $file");
         }
+
+        return $this->readStream($fh);
+    }
+
+    /**
+     * Reads an OLE container from the contents of the stream given.
+     *
+     * @access public
+     * @param resource $fh
+     * @return mixed true on success, PEAR_Error on failure
+     */
+    function readStream($fh)
+    {
         $this->_file_handle = $fh;
 
         $signature = fread($fh, 8);
-        if ("\xD0\xCF\x11\xE0\xA1\xB1\x1A\xE1" != $signature) {
+        if (OLE_CFB_SIGNATURE != $signature) {
             return $this->raiseError("File doesn't seem to be an OLE container.");
         }
         fseek($fh, 28);
-        if (fread($fh, 2) != "\xFE\xFF") {
+        if ($this->_readInt2($fh) != OLE_LITTLE_ENDIAN) {
             // This shouldn't be a problem in practice
             return $this->raiseError("Only Little-Endian encoding is supported.");
         }
@@ -174,11 +211,16 @@ class OLE extends PEAR
         for ($i = 0; $i < $mbbatBlockCount; $i++) {
             fseek($fh, $pos);
             for ($j = 0; $j < $this->bigBlockSize / 4 - 1; $j++) {
-                $mbatBlocks[] = $this->_readInt4($fh);
+                $mbatBlocks[] = $this->_readInt4($fh); // ffix - invalid block address check
             }
             // Last block id in each block points to next block
-            $pos = $this->_getBlockOffset($this->_readInt4($fh));
+            $chainBlock = $this->_readInt4($fh);
+            if ($chainBlock === OLE_ENDOFCHAIN) { // ENDOFCHAIN
+                break;
+            }
+            $pos = $this->_getBlockOffset($chainBlock);
         }
+
 
         // Read Big Block Allocation Table according to chain specified by
         // $mbatBlocks
@@ -194,6 +236,12 @@ class OLE extends PEAR
         $this->sbat = array();
         $shortBlockCount = $sbbatBlockCount * $this->bigBlockSize / 4;
         $sbatFh = $this->getStream($sbatFirstBlockId);
+        if (!$sbatFh) {
+            // Avoid an infinite loop if ChainedBlockStream.php somehow is
+            // missing
+            return false;
+        }
+
         for ($blockId = 0; $blockId < $shortBlockCount; $blockId++) {
             $this->sbat[$blockId] = $this->_readInt4($sbatFh);
         }
@@ -234,7 +282,8 @@ class OLE extends PEAR
         // in OLE_ChainedBlockStream::stream_open().
         // Object is removed from self::$instances in OLE_Stream::close().
         $GLOBALS['_OLE_INSTANCES'][] = $this;
-        $instanceId = end(array_keys($GLOBALS['_OLE_INSTANCES']));
+        $keys = array_keys($GLOBALS['_OLE_INSTANCES']);
+        $instanceId = end($keys);
 
         $path = 'ole-chainedblockstream://oleInstanceId=' . $instanceId;
         if (is_a($blockIdOrPps, 'OLE_PPS')) {
@@ -316,21 +365,25 @@ class OLE extends PEAR
                 $pps = new OLE_PPS_File($name);
                 break;
             default:
-                continue;
+                continue 2;
             }
-            fseek($fh, 1, SEEK_CUR);
+            fseek($fh, 1, SEEK_CUR); // skip Color Flag
             $pps->Type    = $type;
             $pps->Name    = $name;
-            $pps->PrevPps = $this->_readInt4($fh);
-            $pps->NextPps = $this->_readInt4($fh);
-            $pps->DirPps  = $this->_readInt4($fh);
-            fseek($fh, 20, SEEK_CUR);
+            $pps->PrevPps = $this->_readInt4($fh); // Left Sibling ID
+            $pps->NextPps = $this->_readInt4($fh); // Right Sibling ID
+            $pps->DirPps  = $this->_readInt4($fh); // Child ID
+            fseek($fh, 20, SEEK_CUR); // skip CLSID (16 bytes) + State Bits
             $pps->Time1st = OLE::OLE2LocalDate(fread($fh, 8));
             $pps->Time2nd = OLE::OLE2LocalDate(fread($fh, 8));
             $pps->_StartBlock = $this->_readInt4($fh);
             $pps->Size = $this->_readInt4($fh);
             $pps->No = count($this->_list);
             $this->_list[] = $pps;
+
+            if ($type == OLE_PPS_TYPE_ROOT) {
+                $this->_small_handle = $this->getStream($pps->_StartBlock);
+            }
 
             // check if the PPS tree (starting from root) is complete
             if (isset($this->root) &&
@@ -348,7 +401,7 @@ class OLE extends PEAR
                 $pps->children = array();
                 while ($nos) {
                     $no = array_pop($nos);
-                    if ($no != -1) {
+                    if ($no != OLE_FREESECT) {
                         $childPps = $this->_list[$no];
                         $nos[] = $childPps->PrevPps;
                         $nos[] = $childPps->NextPps;
@@ -373,11 +426,11 @@ class OLE extends PEAR
     {
         return isset($this->_list[$index]) &&
                ($pps = $this->_list[$index]) &&
-               ($pps->PrevPps == -1 ||
+               ($pps->PrevPps == OLE_FREESECT ||
                 $this->_ppsTreeComplete($pps->PrevPps)) &&
-               ($pps->NextPps == -1 ||
+               ($pps->NextPps == OLE_FREESECT ||
                 $this->_ppsTreeComplete($pps->NextPps)) &&
-               ($pps->DirPps == -1 ||
+               ($pps->DirPps == OLE_FREESECT ||
                 $this->_ppsTreeComplete($pps->DirPps));
     }
 
@@ -470,11 +523,11 @@ class OLE extends PEAR
     * @param string $ascii The ASCII string to transform
     * @return string The string in Unicode
     */
-    function Asc2Ucs($ascii)
+    static function Asc2Ucs($ascii)
     {
         $rawname = '';
         for ($i = 0; $i < strlen($ascii); $i++) {
-            $rawname .= $ascii{$i} . "\x00";
+            $rawname .= $ascii[$i] . "\x00";
         }
         return $rawname;
     }
@@ -488,7 +541,7 @@ class OLE extends PEAR
     * @param integer $date A timestamp 
     * @return string The string for the OLE container
     */
-    function LocalDate2OLE($date = null)
+    static function LocalDate2OLE($date = null)
     {
         if (!isset($date)) {
             return "\x00\x00\x00\x00\x00\x00\x00\x00";
@@ -514,12 +567,12 @@ class OLE extends PEAR
         $res = '';
 
         for ($i = 0; $i < 4; $i++) {
-            $hex = $low_part % 0x100;
+            $hex = (int) $low_part % 0x100;
             $res .= pack('c', $hex);
             $low_part /= 0x100;
         }
         for ($i = 0; $i < 4; $i++) {
-            $hex = $high_part % 0x100;
+            $hex = (int) $high_part % 0x100;
             $res .= pack('c', $hex);
             $high_part /= 0x100;
         }
@@ -533,7 +586,7 @@ class OLE extends PEAR
     * @access public
     * @static
     */
-    function OLE2LocalDate($string)
+    static function OLE2LocalDate($string)
     {
         if (strlen($string) != 8) {
             return new PEAR_Error("Expecting 8 byte string");
@@ -543,14 +596,14 @@ class OLE extends PEAR
         $factor = pow(2,32);
         $high_part = 0;
         for ($i = 0; $i < 4; $i++) {
-            list(, $high_part) = unpack('C', $string{(7 - $i)});
+            list(, $high_part) = unpack('C', $string[(7 - $i)]);
             if ($i < 3) {
                 $high_part *= 0x100;
             }
         }
         $low_part = 0;
         for ($i = 4; $i < 8; $i++) {
-            list(, $low_part) = unpack('C', $string{(7 - $i)});
+            list(, $low_part) = unpack('C', $string[(7 - $i)]);
             if ($i < 7) {
                 $low_part *= 0x100;
             }
@@ -567,4 +620,3 @@ class OLE extends PEAR
         return floor($big_date);
     }
 }
-?>

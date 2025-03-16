@@ -17,13 +17,19 @@
  * @package    OLE
  * @author     Christian Schmidt <schmidt@php.net>
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: ChainedBlockStream.php,v 1.1 2007/02/13 21:00:42 schmidt Exp $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/OLE
  * @since      File available since Release 0.6.0
  */
 
-require_once 'PEAR.php';
-require_once 'OLE.php';
+if (!class_exists('PEAR')) {
+    require_once 'PEAR.php';
+}
+
+if (!class_exists('OLE')) {
+    require_once 'OLE.php';
+}
+
 
 /**
  * Stream wrapper for reading data stored in an OLE file. Implements methods
@@ -64,6 +70,8 @@ class OLE_ChainedBlockStream extends PEAR
      */
     var $pos;
 
+    var $context;
+
     /**
      * Implements support for fopen().
      * For creating streams using this wrapper, use OLE_PPS_File::getStream().
@@ -103,16 +111,17 @@ class OLE_ChainedBlockStream extends PEAR
             $blockId != $this->ole->root->_StartBlock) {
 
             // Block id refers to small blocks
-            $rootPos = $this->ole->_getBlockOffset($this->ole->root->_StartBlock);
-            while ($blockId != -2) {
-                $pos = $rootPos + $blockId * $this->ole->bigBlockSize;
-                $blockId = $this->ole->sbat[$blockId];
-                fseek($this->ole->_file_handle, $pos);
-                $this->data .= fread($this->ole->_file_handle, $this->ole->bigBlockSize);
+            $rootPos = 0;
+            while ($blockId != OLE_ENDOFCHAIN) {
+                $pos = $rootPos + $blockId * $this->ole->smallBlockSize;
+
+                $blockId = $this->ole->sbat[$blockId];                
+                fseek($this->ole->_small_handle, $pos);
+                $this->data .= fread($this->ole->_small_handle, $this->ole->smallBlockSize);
             }
         } else {
             // Block id refers to big blocks
-            while ($blockId != -2) {
+            while ($blockId != OLE_ENDOFCHAIN) {
                 $pos = $this->ole->_getBlockOffset($blockId);
                 fseek($this->ole->_file_handle, $pos);
                 $this->data .= fread($this->ole->_file_handle, $this->ole->bigBlockSize);
@@ -132,12 +141,15 @@ class OLE_ChainedBlockStream extends PEAR
 
     /**
      * Implements support for fclose().
-     * @return  string
      */
     function stream_close()
     {
         $this->ole = null;
-        unset($GLOBALS['_OLE_INSTANCES']);
+
+        // $GLOBALS is not always defined in stream_close
+        if (isset($GLOBALS['_OLE_INSTANCES'])) {
+            unset($GLOBALS['_OLE_INSTANCES']);
+        }
     }
 
     /**
@@ -150,7 +162,10 @@ class OLE_ChainedBlockStream extends PEAR
         if ($this->stream_eof()) {
             return false;
         }
-        $s = substr($this->data, $this->pos, $count);
+
+        $pos = isset($this->pos) ? $this->pos : 0;
+
+        $s = substr($this->data, $pos, $count);
         $this->pos += $count;
         return $s;
     }
@@ -193,7 +208,7 @@ class OLE_ChainedBlockStream extends PEAR
             $this->pos = $offset;
         } elseif ($whence == SEEK_CUR && -$offset <= $this->pos) {
             $this->pos += $offset;
-        } elseif ($whence == SEEK_END && -$offset <= sizeof($this->data)) {
+        } elseif ($whence == SEEK_END && -$offset <= strlen($this->data)) {
             $this->pos = strlen($this->data) + $offset;
         } else {
             return false;
@@ -213,8 +228,17 @@ class OLE_ChainedBlockStream extends PEAR
             );
     }
 
+    /**
+     * PHP 5.6 for some reason wants this to be implemented. Currently returning false as if it wasn't implemented.
+     * @return boolean
+     */
+    function stream_flush()
+    {
+        // If not implemented, FALSE is assumed as the return value.
+        return false;
+    }
+
     // Methods used by stream_wrapper_register() that are not implemented:
-    // bool stream_flush ( void )
     // int stream_write ( string data )
     // bool rename ( string path_from, string path_to )
     // bool mkdir ( string path, int mode, int options )
@@ -225,5 +249,3 @@ class OLE_ChainedBlockStream extends PEAR
     // bool dir_rewinddir ( void )
     // bool dir_closedir ( void )
 }
-
-?>

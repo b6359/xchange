@@ -17,11 +17,16 @@
 // | Based on OLE::Storage_Lite by Kawai, Takanori                        |
 // +----------------------------------------------------------------------+
 //
-// $Id: PPS.php,v 1.7 2007/02/13 21:00:42 schmidt Exp $
+// $Id$
 
 
-require_once 'PEAR.php';
-require_once 'OLE.php';
+if (!class_exists('PEAR')) {
+    require_once 'PEAR.php';
+}
+
+if (!class_exists('OLE')) {
+    require_once 'OLE.php';
+}
 
 /**
 * Class for creating PPS's for OLE containers
@@ -125,7 +130,7 @@ class OLE_PPS extends PEAR
     * @param string  $data  The (usually binary) source data of the PPS
     * @param array   $children Array containing children PPS for this PPS
     */
-    function OLE_PPS($No, $name, $type, $prev, $next, $dir, $time_1st, $time_2nd, $data, $children)
+    function __construct($No, $name, $type, $prev, $next, $dir, $time_1st, $time_2nd, $data, $children)
     {
         $this->No      = $No;
         $this->Name    = $name;
@@ -205,18 +210,35 @@ class OLE_PPS extends PEAR
     *                          container 
     * @return integer          The index for this PPS
     */
-    function _savePpsSetPnt(&$pps_array) 
+    static function _savePpsSetPnt(&$raList, $to_save, $depth = 0) 
     {
-        $pps_array[count($pps_array)] = &$this;
-        $this->No = count($pps_array) - 1;
-        $this->PrevPps = 0xFFFFFFFF;
-        $this->NextPps = 0xFFFFFFFF;
-        if (count($this->children) > 0) {
-            $this->DirPps = $this->children[0]->_savePpsSetPnt($pps_array);
-        } else {
-            $this->DirPps = 0xFFFFFFFF;
-        }
-        return $this->No;
+      if ( !is_array($to_save) || (count($to_save) == 0) ) {
+        return OLE_FREESECT;
+      }
+      elseif( count($to_save) == 1 ) {
+        $cnt = count($raList);
+        // If the first entry, it's the root... Don't clone it!
+        $raList[$cnt] = ( $depth == 0 ) ? $to_save[0] : clone $to_save[0];
+        $raList[$cnt]->No = $cnt;
+        $raList[$cnt]->PrevPps = OLE_FREESECT;
+        $raList[$cnt]->NextPps = OLE_FREESECT;
+        $raList[$cnt]->DirPps  = self::_savePpsSetPnt($raList, @$raList[$cnt]->children, $depth++);
+        return $cnt;
+      }
+      else {
+        $iPos  = floor(count($to_save) / 2);
+        $aPrev = array_slice($to_save, 0, $iPos);
+        $aNext = array_slice($to_save, $iPos + 1);
+
+        $cnt   = count($raList);
+        // If the first entry, it's the root... Don't clone it!
+        $raList[$cnt] = ( $depth == 0 ) ? $to_save[$iPos] : clone $to_save[$iPos];
+        $raList[$cnt]->No = $cnt;
+        $raList[$cnt]->PrevPps = self::_savePpsSetPnt($raList, $aPrev, $depth++);
+        $raList[$cnt]->NextPps = self::_savePpsSetPnt($raList, $aNext, $depth++);
+        $raList[$cnt]->DirPps  = self::_savePpsSetPnt($raList, @$raList[$cnt]->children, $depth++);
+
+        return $cnt;
+      }
     }
 }
-?>
