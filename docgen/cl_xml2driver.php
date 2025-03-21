@@ -96,7 +96,7 @@ class nDOCGEN {
 class doc_wrap { // for wrapping purposes
 	
 	var $_pass;
-
+	var $DRIVER;
 	var $final_out; // variable to store final output from driver
 	var $config_file; // path to configuration file
 	var $temp_dir;  // path to store tem files
@@ -137,6 +137,7 @@ class doc_wrap { // for wrapping purposes
 
 // ------------------------------------------------------------------------------------------------
 	function final_result() {
+		$this->DRIVER = new RTF_DRIVER();
 		return $this->DRIVER->_iGetCode();
 	} // end of function
 // ------------------------------------------------------------------------------------------------
@@ -574,7 +575,8 @@ $doc_wrap = new doc_wrap;
 		xml_set_external_entity_ref_handler($xml_parser, "externalEntityRefHandler");
 		if ($file == "") { return false; }
 		if (!is_array($parser_file)) { settype($parser_file, "array"); }
-		$parser_file[$xml_parser] = $file;
+		// $parser_file[$xml_parser] = $file;
+		$parser_file[(int) $xml_parser] = $file;
 		return $xml_parser;
 	} // end of function
 //-------------------------------------------------------------------------------------------------
@@ -587,7 +589,7 @@ $doc_wrap = new doc_wrap;
 			echo "[start_el <b>".$name."</b>]"; // tag name
 			if (sizeof($attribs)) {
 				echo " {";
-				while (list($k, $v) = each($attribs)) {
+				foreach ($attribs as $k => $v) {
 					print "<font color=\"#00ff00\">$k</font>=\"<font color=\"#990000\">$v</font>\"";
 				}
 				echo "}";
@@ -597,7 +599,7 @@ $doc_wrap = new doc_wrap;
 		}
 		if (sizeof($attribs)) {
 			reset($attribs);
-			while (list($k, $v) = each($attribs)) {
+			foreach ($attribs as $k => $v) {
 				$ar_tmp[$k] = ($k!="NUM_FORMAT"&&
 									$k!="CONFIG_FILE"&&
 									$k!="TITLE"&&
@@ -781,7 +783,7 @@ $doc_wrap = new doc_wrap;
 	function trustedFile($file) {
 		global $doc_wrap;
 		// only trust local files owned by ourselves
-		if (!eregi("^([a-z]+)://", $file)
+		if (!mb_eregi("^([a-z]+)://", $file)
 			&& fileowner($file) == getmyuid()) {
 			return true;
 		}

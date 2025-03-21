@@ -318,7 +318,7 @@ class PDF extends FPDF {
 		while($i<$nb) {
 			$wp_flag=false;
 			//Get next character
-			$c=$s{$i};
+			$c=$s[$i];
 			if($c==' ') {$sep=$i;$sep_l=$l;}
 			if (sizeof($c_line_wp)>0) { // -- image wrap
 				//$l+=$cw[$c];
@@ -988,7 +988,8 @@ class PDF extends FPDF {
 // ------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------
-	function Image($file,$img,$x,$y,$w=0,$h=0,$type='',$link='') {
+	// function Image($file,$img,$x,$y,$w=0,$h=0,$type='',$link='') {
+	function Image($file, $x, $y, $w = 0, $h = 0, $type = '', $link = '') {
 		//Put an image on the page
 		if(!isset($this->images[$file]))
 		{

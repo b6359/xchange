@@ -100,6 +100,8 @@ class RTF_DRIVER {
 	var $_started;
 	var $_pre_table = false;
 	var $_first_in_cell = true;
+	var $tbl_def_cellpadding;
+	var $_first_par;
 	
 
 
@@ -393,6 +395,7 @@ goesuserscolors
 // ------------------------------------------------------------------------------------------------
 	function b_style($style) {
 		$perms = "";
+		$slash = "pp345pag1223pp";
 		switch (strtoupper($style)) {
 			case "SHADOWED": $perms .= "brdrsh"; break; //Shadowed border.
 			case "DOUBLE": $perms .= "brdrdb"; break; //Double border.
@@ -815,6 +818,7 @@ goesuserscolors
 
 // ------------------------------------------------------------------------------------------------
 	function _iSECTION($attribs,$EndOfTag) {
+		$slash = "pp345pag1223pp";
 		if (!$EndOfTag) {
 			$settings = "\\sect\\sectd\\pgncont\r\n";
 			if (isset($attribs["NOBREAK"])) {
@@ -903,7 +907,7 @@ goesuserscolors
 // ------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------
-	function _iNEWCOL() {
+	function _iNEWCOL($attribs,$EndOfTag) {
 		if (!$EndOfTag) {
 			$this->_add_code("\\column ");
 		}
@@ -948,6 +952,7 @@ goesuserscolors
 
 // ------------------------------------------------------------------------------------------------
 	function _iP($attribs,$EndOfTag) {
+		$slash = "pp345pag1223pp";
 		if (!$EndOfTag) {
 			$d_before    = "\\sb".$this->twips($this->def_par_before);
 			$d_after     = "\\sa".$this->twips($this->def_par_after);
@@ -1188,8 +1193,8 @@ goesuserscolors
 			if (isset($attribs["TABLEKEEP"])) { $tbl_keep_all = "\\keep\\keepn "; }
 			else {$tbl_keep_all = "";}
 			/////////////
-			if (ereg("%",$tbl_width)) {
-				$yyy = ereg_replace("%", "", $tbl_width);
+			if (mb_ereg("%",$tbl_width)) {
+				$yyy = mb_ereg_replace("%", "", $tbl_width);
 				$this->tb_wdth[$this->tbl_level] = round((($this->pg_width - ($this->mar_left + $this->mar_right)) / 100) * $yyy);
 			}
 			else { $this->tb_wdth[$this->tbl_level] = $this->twips($tbl_width); }
@@ -1274,8 +1279,8 @@ goesuserscolors
 			else { $tr_header = ""; }
 
 			///////////////////// - ROW
-			if (ereg("%",$tr_width)) {
-				$yyy = ereg_replace("%", "", $tr_width);
+			if (mb_ereg("%",$tr_width)) {
+				$yyy = mb_ereg_replace("%", "", $tr_width);
 				$tr_twips_wdth = round((($this->pg_width - ($this->mar_left + $this->mar_right)) / 100) * $yyy);
 			}
 			else { $tr_twips_wdth = $this->twips($tr_width); }
@@ -1374,8 +1379,8 @@ goesuserscolors
 				if (preg_match("/r/i",$td_border)) { $td_brd_f .= "\\clbrdrr\\brdrs\\brdrw10".$brd_color; }
 				if (preg_match("/l/i",$td_border)) { $td_brd_f .= "\\clbrdrl\\brdrs\\brdrw10".$brd_color; }
 			}
-			if (ereg("%",$td_width)) {
-				$ooo = ereg_replace("%", "", $td_width);
+			if (mb_ereg("%",$td_width)) {
+				$ooo = mb_ereg_replace("%", "", $td_width);
 				$td_wdth_mass[] = round(($this->curr_tbl_settings[$this->tbl_level]["tr_twips_wdth"] / 100) * $ooo);
 				$tmp_wdth = round(($this->curr_tbl_settings[$this->tbl_level]["tr_twips_wdth"] / 100) * $ooo);
 			}
@@ -1518,7 +1523,7 @@ goesuserscolors
 				$count_i = $count_i[0];
 				for ($i=0;$i<sizeof($count_i);$i++) {
 					$fnd = $this->image_token.$i."nort";
-					$this->text = ereg_replace($fnd,$this->image_array[$i],$this->text);
+					$this->text = mb_ereg_replace($fnd,$this->image_array[$i],$this->text);
 				}
 			}
 		}
@@ -1550,10 +1555,15 @@ goesuserscolors
 	function render_doc() {
 		//--- PROCESSING COLORS ----------------
 		$colors = "";
-		reset ($this->color_table);
-		while (list ($key, $val) = each ($this->color_table)) {
-			$colors .= $this->color_table[$key]["VALUE"];
+		if(isset($this->color_table) && (count($this->color_table)) > 0){
+			reset ($this->color_table);
+			foreach ($this->color_table as $key => $val) {
+				$colors .= $this->color_table[$key];
+			}
 		}
+		// while (list ($key, $val) = each ($this->color_table)) {
+		// 	$colors .= $this->color_table[$key]["VALUE"];
+		// }
 		$this->header = preg_replace("/goesuserscolors/",$colors,$this->header);
 		//--------------------------------------
 		$this->process_images();
@@ -1566,11 +1576,11 @@ goesuserscolors
 	function _iGetCode() {
 		if ($this->temp_dir !== false) {
 			@unlink($this->temp_dir.$this->rnd_proc_nm."_final");
-			trigger_error ("If you are using temporary directory you need to call either <b>get_doc_stream(\"file_name\");</b> or <b>get_doc_to_file(\"path_to_file\",\"file_name\");</b>. Please, consult documentation for additional information.<br>", E_USER_ERROR);
-			exit;
+			$this->render_doc();
+			// trigger_error ("If you are using temporary directory you need to call either <b>get_doc_stream(\"file_name\");</b> or <b>get_doc_to_file(\"path_to_file\",\"file_name\");</b>. Please, consult documentation for additional information.<br>", E_USER_ERROR);
+			// exit;
 		}
 		else {
-			$this->render_doc();
 		}
 		return $this->text;
 	} // end of function
@@ -1625,7 +1635,7 @@ goesuserscolors
 		$num_id = 0;
 		for ($a=0;$a<sizeof($mass_wdth);$a++)
 		{
-			$id = 0; // номер блока в ряду
+			$id = 0; // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ
 			for ($c=0;$c<$width;$c++) {
 				if ($fin_tbl_body[$a][$c]==$h) {
 						for ($lk=0;$lk<sizeof(@$mass_wdth[$a][$id]);$lk++) {
@@ -1745,7 +1755,7 @@ goesuserscolors
 		for ($w=0;$w<$or_wdth;$w++) {
 			$fl=false;
 			for ($h=0;$h<sizeof($wdth);$h++) {
-				if (ereg("mst",$wdth[$h][$w]) || ereg("sl",$wdth[$h][$w])) { $fl = true; }
+				if (mb_ereg("mst",$wdth[$h][$w]) || mb_ereg("sl",$wdth[$h][$w])) { $fl = true; }
 			}
 			if ($fl) { $yes_no[$w] = "yes"; }
 			else { $yes_no[$w] = "no"; }
@@ -1761,7 +1771,7 @@ goesuserscolors
 		for ($w=0;$w<$or_wdth;$w++) {
 			for ($h=0;$h<sizeof($wdth);$h++) {
 				$d_tmp = 0;
-				if (ereg("mst",$wdth[$h][$w])) {
+				if (mb_ereg("mst",$wdth[$h][$w])) {
 					$width = preg_replace("/mst\d+/","",$wdth[$h][$w]);
 					$span = preg_replace("/\d+mst/","",$wdth[$h][$w]);
 					if ($span>0) {

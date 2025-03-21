@@ -1,6 +1,7 @@
 <?php
-
 session_start();
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 date_default_timezone_set('Europe/Tirane');
 
 if (isset($_SESSION['uid'])) {
@@ -222,12 +223,12 @@ if (isset($_SESSION['uid'])) {
       $row_vler1 = 0;
       $row_vler2 = 0;
       $row_kurs = 0;
-      $row_num = "";
+      $row_num = 0;
       while ($row_RepInfo) {
 
-        $row_num  += $row_RepInfo['nr'];
-        $row_vler1 += $row_RepInfo['vleftadebituar'];
-        $row_vler2 += $row_RepInfo['vleftapaguar'];
+        $row_num  += (int)$row_RepInfo['nr'];
+        $row_vler1 += (int)$row_RepInfo['vleftadebituar'];
+        $row_vler2 += (int)$row_RepInfo['vleftapaguar'];
 
         $row_RepInfo = $RepInfoRS->fetch_assoc();
       };
@@ -1179,18 +1180,19 @@ if (isset($_SESSION['uid'])) {
   if ((isset($_POST['rep_type'])) && ($_POST['rep_type'] == "ditor")) {
 
     //-----------------------------------------------------------------------------------------------------------
-    require_once "docgen/cl_xml2driver.php";
+    // require_once "docgen/cl_xml2driver.php";
     //-----------------------------------------------------------------------------------------------------------
-    $file_pdf = "rep/BOA_ditor_" . strftime('%Y%m%d%H%M%S') . ".rtf";
+    $date_print = new DateTime();
+    $file_pdf = "rep/BOA_ditor_" . $date_print->format('Y-m-d_H:i:s') . ".rtf";
     //-----------------------------------------------------------------------------------------------------------
-    $xml_template  =  '<' . '?xml version="1.0" encoding="ISO-8859-1" ?' . '>';
-    $xml_template .= '<DOC config_file="doc_config.inc" title="Raport per BOA" company="' . $_SESSION['CNAME'] . '">';
-    $xml_template .= '<header>';
+    // $xml_template  =  '<' . '?xml version="1.0" encoding="ISO-8859-1" ?' . '>';
+    // $xml_template .= '<DOC config_file="doc_config.inc" title="Raport per BOA" company="' . $_SESSION['CNAME'] . '">';
+    $xml_template = '<header>';
     $xml_template .= '</header>';
     $xml_template .= '<footer>';
     $xml_template .= '</footer>';
 
-    $xml_template .= '<table width="100%" align="left" border="0">';
+    $xml_template .= '<table width="100%" align="left" border="1">';
     $xml_template .= '<tr>';
     $xml_template .= '<td width="15%" align="center"><font size="3">&nbsp;</font></td>';
     $xml_template .= '<td width="17%" align="center"><font size="3">&nbsp;</font></td>';
@@ -1565,12 +1567,18 @@ if (isset($_SESSION['uid'])) {
 
     $xml_template .= '</DOC>';
 
-    $xml = new nDOCGEN($xml_template, "RTF");
-    $fp = fopen($file_pdf, "w");
-    fwrite($fp, $xml->get_result_file());
-    @fclose($fp);
+    // $xml = new nDOCGEN($xml_template, "RTF");
+    // $fp = fopen($file_pdf, "w");
+    // fwrite($fp, $xml->get_result_file());
+    // @fclose($fp);
+    $fileName = "BOA_ditor_". $date_print->format('Y-m-d_H:i:s').".doc";
+    header("Content-Type: application/vnd.ms-word");
+    header("Content-Disposition: attachment; filename=\"$fileName\"");
+    header("Pragma: no-cache");
+    header("Expires: 0");
+    echo $xml_template;
 
-    header(sprintf("Location: %s", $file_pdf));
+    // header(sprintf("Location: %s", $file_pdf));
   }
 
   // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1579,14 +1587,15 @@ if (isset($_SESSION['uid'])) {
   if ((isset($_POST['rep_type'])) && ($_POST['rep_type'] == "javor")) {
 
     //-----------------------------------------------------------------------------------------------------------
-    require_once "docgen/cl_xml2driver.php";
+    // require_once "docgen/cl_xml2driver.php";
     require_once "docgen/num_to_words.php";
     //-----------------------------------------------------------------------------------------------------------
-    $file_pdf = "rep/BOA_javor_" . strftime('%Y%m%d%H%M%S') . ".rtf";
+    $date_print1 = new DateTime();
+    $file_pdf = "rep/BOA_javor_" . $date_print1->format('Y-m-d H:i:s') . ".rtf";
     //-----------------------------------------------------------------------------------------------------------
-    $xml_template  =  '<' . '?xml version="1.0" encoding="ISO-8859-1" ?' . '>';
-    $xml_template .= '<DOC config_file="doc_config.inc" title="Raport per BOA" company="' . $_SESSION['CNAME'] . '">';
-    $xml_template .= '<header>';
+    // $xml_template  =  '<' . '?xml version="1.0" encoding="ISO-8859-1" ?' . '>';
+    // $xml_template .= '<DOC config_file="doc_config.inc" title="Raport per BOA" company="' . $_SESSION['CNAME'] . '">';
+    $xml_template = '<header>';
     $xml_template .= '</header>';
     $xml_template .= '<footer>';
     $xml_template .= '</footer>';
@@ -1821,63 +1830,20 @@ if (isset($_SESSION['uid'])) {
 
     $xml_template .= '</DOC>';
 
-    $xml = new nDOCGEN($xml_template, "RTF");
-    $fp = fopen($file_pdf, "w");
-    fwrite($fp, $xml->get_result_file());
-    @fclose($fp);
+    // $xml = new nDOCGEN($xml_template, "RTF");
+    // $fp = fopen($file_pdf, "w");
+    // fwrite($fp, $xml->get_result_file());
+    // @fclose($fp);
 
-    header(sprintf("Location: %s", $file_pdf));
+    // header(sprintf("Location: %s", $file_pdf));
+    $date_print1 = new DateTime();
+    $fileName = "BOA_javor_". $date_print1->format('Y-m-d_H:i:s').".doc";
+    header("Content-Type: application/vnd.ms-word");
+    header("Content-Disposition: attachment; filename=\"$fileName\"");
+    header("Pragma: no-cache");
+    header("Expires: 0");
+    echo $xml_template;
   }
 }
 
 ?>
-
-<script>
-  document.addEventListener('contextmenu', event => event.preventDefault());
-  // Disable keyCode
-  document.addEventListener('keydown', e => {
-    if
-    // Disable F1
-    (e.keyCode === 112 ||
-
-      // Disable F3
-      e.keyCode === 114 ||
-
-      // Disable F5
-      e.keyCode === 116 ||
-
-      // Disable F6
-      e.keyCode === 117 ||
-
-      // Disable F7
-      e.keyCode === 118 ||
-
-      // Disable F10
-      e.keyCode === 121 ||
-
-      // Disable F11
-      e.keyCode === 122 ||
-
-      // Disable F12
-      e.keyCode === 123 ||
-
-      // Disable Ctrl
-      e.ctrlKey ||
-
-      // Disable Shift
-      e.shiftKey ||
-
-      // Disable Alt
-      e.altKey ||
-
-      // Disable Ctrl+Shift+Key
-      e.ctrlKey && e.shiftKey ||
-
-      // Disable Ctrl+Shift+alt
-      e.ctrlKey && e.shiftKey && e.altKey
-    ) {
-      e.preventDefault();
-      //alert('Not Allowed');
-    }
-  });
-</script>
