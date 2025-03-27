@@ -204,13 +204,13 @@ if ((isset($_POST["form_action"])) && ($_POST["form_action"] == "ins")) {
     $id_info_value = $row_id_info['nr'];
 
     if ($_POST['download_type'] === 'json') {
-        $updateGoTo = "exchange_print.php?hid=" . $id_info_value . "&download_type=json";
+        $updateGoTo = "exchange_print_download.php?hid=" . $id_info_value . "&download_type=json";
+        echo "<script>window.open('$updateGoTo', '_blank');</script>";
     } else {
-        // $updateGoTo = "exchange_print.php?hid=" . $id_info_value . "&download_type=regular";
-        $updateGoTo = "exchange.php";
+        $updateGoTo = "exchange_print.php?hid=" . $id_info_value . "&download_type=regular";
+        header(sprintf("Location: %s", $updateGoTo));
+        exit();
     }
-    header(sprintf("Location: %s", $updateGoTo));
-    exit();
 }
 
 // $sql_id_info = "select opstatus from opencloseday ";

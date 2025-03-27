@@ -41,15 +41,10 @@ if (isset($_SESSION['uid'])) {
   $time = date("H:i");
 ?>
 
-
-
   <html>
 
   <head>
-
     <title><?php echo $_SESSION['CNAME']; ?> - Web Exchange System</title>
-
-
     <style type="text/css">
       body,
       td,
@@ -57,24 +52,27 @@ if (isset($_SESSION['uid'])) {
         font-size: 10px;
       }
     </style>
-
   </head>
 
   <body leftmargin=0 topmargin=0 marginheight="0" marginwidth="5" bgcolor=#FFFFFF vlink="#0000ff" link="#0000ff" onLoad="JavaScript: window.print();" onKeyDown=" window.location='exchange.php';">
-    <TABLE cellSpacing=0 cellPadding=0 width="300" border=0>
-      <TBODY>
-        <TR>
-          <TD align="center">
-            <img src="<?php if (isset($_SESSION['logo_image']) && !empty($_SESSION['logo_image'])) { echo $_SESSION['logo_image']; } else { echo './assets/images/Logo.png'; } ?>" title="GlobalTech.al" alt="GlobalTech.al" border="0" width="100">
-          </TD>
-        </TR>
-      </TBODY>
-    </TABLE>
-    <TABLE cellSpacing=0 cellPadding=0 width="300" border=0>
-      <TBODY style="font-weight: bolder;">
-        <TR>
-          <TD height="15" colSpan=3 align="left" valign="middle">
-            <DIV class=ctxheadingP>
+    <table cellSpacing=0 cellPadding=0 width="300" border=0>
+      <tbody>
+        <tr>
+          <td align="center">
+            <img src="<?php if (isset($_SESSION['logo_image']) && !empty($_SESSION['logo_image'])) {
+                        echo $_SESSION['logo_image'];
+                      } else {
+                        echo './assets/images/Logo.png';
+                      } ?>" title="GlobalTech.al" alt="GlobalTech.al" border="0" width="100">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table cellSpacing=0 cellPadding=0 width="300" border=0>
+      <tbody style="font-weight: bolder;">
+        <tr>
+          <td height="15" colSpan=3 align="left" valign="middle">
+            <div class=ctxheadingP>
               <b>
                 <font size="2">
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $_SESSION['CNIPT']; ?><br>
@@ -82,21 +80,21 @@ if (isset($_SESSION['uid'])) {
                 </font>
               </b>
 
-            </DIV>
-          </TD>
-        </TR>
-      </TBODY>
-    </TABLE>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-    <TABLE cellSpacing=0 cellPadding=0 width="300" border=0>
-      <TBODY style="font-weight: bolder;">
+    <table cellSpacing=0 cellPadding=0 width="300" border=0>
+      <tbody style="font-weight: bolder;">
         <td height="15" colspan="3" align="left" valign="middle" style="
             font-size: 20px;
             text-align: center;
             text-transform: capitalize;">Mandat k&euml;mbimi valutor</td>
-        <TR style="font-weight: bolder;">
-          <TD align="center" colSpan=3>
-            <DIV class=ctxheadingP>
+        <tr style="font-weight: bolder;">
+          <td align="center" colSpan=3>
+            <div class=ctxheadingP>
 
               <table width="300" border="0" cellpadding="0" cellspacing="0" style="font-weight:bolder">
                 <tr>
@@ -105,9 +103,6 @@ if (isset($_SESSION['uid'])) {
                 <tr valign="middle">
                   <td></td>
                   <td width="*" colspan="5">Nr:&nbsp;<b><?php echo
-                                                        /*
-        $row_exchange_info['id_llogfilial']."/".
-        */
                                                         $row_exchange_info['unique_id']; ?>
                     </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data:&nbsp;<b><?php echo substr($row_exchange_info['datarregjistrimit'], 8, 2) . "/" . substr($row_exchange_info['datarregjistrimit'], 5, 2) . "/" . substr($row_exchange_info['datarregjistrimit'], 0, 4) . ""; ?></b></td>
                   <td></td>
@@ -224,28 +219,20 @@ if (isset($_SESSION['uid'])) {
                   <td width="5"></td>
                 </tr>
               </table>
-
-            </DIV>
-          </TD>
-        </TR>
-      </TBODY>
-    </TABLE>
-
-    <TABLE cellSpacing=0 cellPadding=0 width="300" border=0>
-      <TBODY style="font-weight: bolder;">
-        <TR>
-          <TD height="15" colSpan=3 align="left" valign="middle">
-            <DIV class=ctxheadingP>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ju Faleminderit! - Thank you!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a title="Kthehu pas..." class="link4" href="exchange.php"><img src="images/down_arrow.gif" border="0"></a></DIV>
-          </TD>
-        </TR>
-      </TBODY>
-    </TABLE>
-
-    <br>
-    <br>
-    <br>
-
-
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table cellSpacing=0 cellPadding=0 width="300" border=0>
+      <tbody style="font-weight: bolder;">
+        <tr>
+          <td height="15" colSpan=3 align="left" valign="middle">
+            <div class=ctxheadingP>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ju Faleminderit! - Thank you!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a title="Kthehu pas..." class="link4" href="exchange.php"><img src="images/down_arrow.gif" border="0"></a></div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </body>
 
   </html>
